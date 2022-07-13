@@ -1,0 +1,96 @@
+{
+    "projects": {
+        "todoApp": {
+            "name": "To-Do-App",
+            "description": "To-Do-App created with react.js",
+            "url": "https://khambazarov-todo.netlify.app/"
+        },
+        "CDApp": {
+            "name": "Common-Destination-App",
+            "description": "Common-Destination-App is a full-stack/MERN-stack App",
+            "url": "https://commondestination.netlify.app/"
+        }
+    },
+    "accounts": {
+        "github": {
+            "name": "GitHub Account",
+            "description": "GitHub Account",
+            "url": "https://github.com/Khambazarov/"
+        },
+        "mail": {
+            "name": "Gmail Account",
+            "description": "Gmail Account",
+            "url": "https://KhambazarovRenat@gmail.com"
+        },
+        "linkedin": {
+            "name": "Linkedin Account",
+            "description": "Linkedin Account",
+            "url": "https://www.linkedin.com/in/renat-khambazarov/"
+        }
+    },
+    "cv": {
+        "contact": {
+            "mail": "https://KhambazarovRenat@gmail.com",
+            "linkedin": "https://www.linkedin.com/in/renat-khambazarov",
+            "web": "https://khambazarov-renat.netlify.app"
+        },
+        "shortProfile": [
+            "Web and software developer",
+            "Implementation of software projects",
+            "Years of experience as a restaurant manager"
+        ],
+        "itEducation": [
+            "Full-time web & software development",
+            "DCI – Digital Career Institute gGmbH (remote)",
+            "12/2020 – 04/2022"
+        ],
+        "skills": [
+            "Javascript - ES6",
+            "ReactJS",
+            "NodeJS",
+            "ExpressJS",
+            "MongoDB",
+            "Mongoose",
+            "REST APIs",
+            "JWT & authentication methods",
+            "Agile methodologies",
+            "HTML5 | CSS3 | SASS | MaterialUI | Bootstrap",
+            "Heroku | Netlify | Vercel, GitHub Pages",
+            "VSCode | Git | GitHub"
+        ],
+        "languages": [
+            "English - good knowledge level - B1.2",
+            "German - native speaker level",
+            "Russian - native speaker level",
+            "Circassian - native speaker"
+        ],
+        "certificates": [
+            "Job-related english language - level: B1.2 (200 hours) 2021",
+            "Job-related english language - level: B1 (600 hours) 2017"
+        ],
+        "education": [
+            "Catering expert",
+            "McDonald's Eckernförde",
+            "2010 – 2011"
+        ],
+        "experience": {
+            "it": [
+                "Full-time web and software development",
+                "DCI – Digital Career Institute gGmbH (remote)",
+                "2020 – 2022"
+            ],
+            "mcd": [
+                "McDonald's Germany LLC",
+                "Hamburg | Eckernförde | Schleswig | Kappeln",
+                "2001 – 2020"
+            ],
+            "mgr": [
+                "Manager | Assistant manager",
+                "2009 – 2020",
+                "Work and vacation planning",
+                "Responsible for recruiting employees",
+                "Budget planning (month | quarter | year)"
+            ]
+        }
+    }
+}

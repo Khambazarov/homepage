@@ -1,0 +1,19 @@
+*,
+*::before,
+*::after {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 99.24vw; // why not 100vw???
+  height: 100vh;
+  // background-color: #111;
+  font-family: roboto;
+}
+
+a {
+  text-decoration: none;
+}
