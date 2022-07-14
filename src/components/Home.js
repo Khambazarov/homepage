@@ -1,6 +1,5 @@
 import React from "react";
 import { ButtonMUI } from "../materialUI/ButtonMUI";
-// import { LinkHome, LinkProjects, LinkCV, LinkContact } from "./Links";
 
 export const Home = () => {
   return (
