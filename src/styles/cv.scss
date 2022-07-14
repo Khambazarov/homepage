@@ -5,10 +5,8 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  // align-items: center;
   font-size: 2rem;
   font-weight: bold;
-  // border: 10px solid #f00;
 
   .nav {
     display: flex;
@@ -18,7 +16,6 @@
   //   width: 100%;
   //   height: 100%;
   //   // display: flex; // for Desktop only
-  //   border: 10px solid #0f0;
   // }
 
   .img {
@@ -31,23 +28,9 @@
     // width: 37.3%; // ? for Desktop only
     width: 100%;
     height: 30%;
-    // border: 10px solid #000;
   }
-
-  // .container_cv {
-  // width: 100%;
-  // height: 70%;
-  // display: flex;
-  // flex-direction: column;
-  // text-align: center;
-  // border: 10px solid #f00;
 
   Button {
     width: 100%; //  for mobile only
-    // border: 10px solid #00f;
-  }
-  // }
-  li {
-    list-style: inside;
   }
 }

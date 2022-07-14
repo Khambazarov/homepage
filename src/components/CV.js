@@ -59,63 +59,48 @@ export const CV = () => {
           profile
         </Button>
         <Collapse in={profile}>
-          <Accordion
-            expanded={expanded === "panel5"}
-            onChange={handleChange("panel5")}
-          >
-            <AccordionDetails
-              aria-controls="panel5d-content"
-              id="panel5d-header"
-            >
-              <Typography>
-                <ul>
-                  {data.cv.shortProfile.map((item, i) => {
-                    return <li key={i}>{item}</li>;
-                  })}
-                </ul>
-              </Typography>
+          <Accordion>
+            <AccordionDetails>
+              {data.cv.shortProfile.map((item, i) => {
+                return <Typography key={i}>{item}</Typography>;
+              })}
             </AccordionDetails>
           </Accordion>
-          <Accordion
-            expanded={expanded === "panel6"}
-            onChange={handleChange("panel6")}
-          >
+          <Accordion>
             <AccordionDetails>
-              <Typography>
-                <Button
-                  variant="outlined"
-                  size="small"
-                  color="primary"
-                  startIcon={<GitHub />}
-                  endIcon={<GitHub />}
-                  target="_blank"
-                  href={data.accounts.github.url}
-                >
-                  github
-                </Button>
-                <Button
-                  variant="outlined"
-                  size="small"
-                  color="primary"
-                  startIcon={<Mail />}
-                  endIcon={<Mail />}
-                  target="_blank"
-                  href={data.accounts.mail.url}
-                >
-                  gmail
-                </Button>
-                <Button
-                  variant="outlined"
-                  size="small"
-                  color="primary"
-                  startIcon={<LinkedIn />}
-                  endIcon={<LinkedIn />}
-                  target="_blank"
-                  href={data.accounts.linkedin.url}
-                >
-                  linkedin
-                </Button>
-              </Typography>
+              <Button
+                variant="outlined"
+                size="small"
+                color="primary"
+                startIcon={<GitHub />}
+                endIcon={<GitHub />}
+                target="_blank"
+                href={data.accounts.github.url}
+              >
+                github
+              </Button>
+              <Button
+                variant="outlined"
+                size="small"
+                color="primary"
+                startIcon={<Mail />}
+                endIcon={<Mail />}
+                target="_blank"
+                href={data.accounts.mail.url}
+              >
+                gmail
+              </Button>
+              <Button
+                variant="outlined"
+                size="small"
+                color="primary"
+                startIcon={<LinkedIn />}
+                endIcon={<LinkedIn />}
+                target="_blank"
+                href={data.accounts.linkedin.url}
+              >
+                linkedin
+              </Button>
             </AccordionDetails>
           </Accordion>
         </Collapse>
@@ -131,53 +116,39 @@ export const CV = () => {
         </Button>
         <Collapse in={education}>
           <Accordion
-            expanded={expanded === "panel7"}
-            onChange={handleChange("panel7")}
+            expanded={expanded === "panel1"}
+            onChange={handleChange("panel1")}
           >
             <AccordionSummary
-              aria-controls="panel7d-content"
-              id="panel7d-header"
+              aria-controls="panel1d-content"
+              id="panel1d-header"
             >
               <Typography style={{ width: "100%", textAlign: "center" }}>
                 Web and software development
               </Typography>
             </AccordionSummary>
-            <AccordionDetails
-              aria-controls="panel7d-content"
-              id="panel7d-header"
-            >
-              <Typography>
-                <ul>
-                  {data.cv.experience.it.map((item, i) => {
-                    return <li key={i}>{item}</li>;
-                  })}
-                </ul>
-              </Typography>
+            <AccordionDetails>
+              {data.cv.experience.it.map((item, i) => {
+                return <Typography key={i}>{item}</Typography>;
+              })}
             </AccordionDetails>
           </Accordion>
           <Accordion
-            expanded={expanded === "panel8"}
-            onChange={handleChange("panel8")}
+            expanded={expanded === "panel2"}
+            onChange={handleChange("panel2")}
           >
             <AccordionSummary
-              aria-controls="panel8d-content"
-              id="panel8d-header"
+              aria-controls="panel2d-content"
+              id="panel2d-header"
             >
               <Typography style={{ width: "100%", textAlign: "center" }}>
                 Catering expert
               </Typography>
             </AccordionSummary>
-            <AccordionDetails
-              aria-controls="panel8d-content"
-              id="panel8d-header"
-            >
-              <Typography>
-                <ul>
-                  {data.cv.education.map((item, i) => {
-                    return <li key={i}>{item}</li>;
-                  })}
-                </ul>
-              </Typography>
+            <AccordionDetails>
+              {data.cv.education.map((item, i) => {
+                return <Typography key={i}>{item}</Typography>;
+              })}
             </AccordionDetails>
           </Accordion>
         </Collapse>
@@ -193,47 +164,21 @@ export const CV = () => {
         </Button>
         <Collapse in={experience}>
           <Accordion
-            expanded={expanded === "panel1"}
-            onChange={handleChange("panel1")}
+            expanded={expanded === "panel3"}
+            onChange={handleChange("panel3")}
           >
             <AccordionSummary
-              aria-controls="panel1d-content"
-              id="panel1d-header"
+              aria-controls="panel3d-content"
+              id="panel3d-header"
             >
               <Typography style={{ width: "100%", textAlign: "center" }}>
                 Web and software development
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <Typography>
-                <ul>
-                  {data.cv.experience.it.map((item, i) => {
-                    return <li key={i}>{item}</li>;
-                  })}
-                </ul>
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-          <Accordion
-            expanded={expanded === "panel2"}
-            onChange={handleChange("panel2")}
-          >
-            <AccordionSummary
-              aria-controls="panel2d-content"
-              id="panel2d-header"
-            >
-              <Typography style={{ width: "100%", textAlign: "center" }}>
-                McDonald's Germany LLC
-              </Typography>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography>
-                <ul>
-                  {data.cv.experience.mcd.map((item, i) => {
-                    return <li key={i}>{item}</li>;
-                  })}
-                </ul>
-              </Typography>
+              {data.cv.experience.it.map((item, i) => {
+                return <Typography key={i}>{item}</Typography>;
+              })}
             </AccordionDetails>
           </Accordion>
           <Accordion
@@ -241,21 +186,35 @@ export const CV = () => {
             onChange={handleChange("panel4")}
           >
             <AccordionSummary
-              aria-controls="panel3d-content"
-              id="panel3d-header"
+              aria-controls="panel4d-content"
+              id="panel4d-header"
+            >
+              <Typography style={{ width: "100%", textAlign: "center" }}>
+                McDonald's Germany LLC
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              {data.cv.experience.mcd.map((item, i) => {
+                return <Typography key={i}>{item}</Typography>;
+              })}
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
+            expanded={expanded === "panel5"}
+            onChange={handleChange("panel5")}
+          >
+            <AccordionSummary
+              aria-controls="panel5d-content"
+              id="panel5d-header"
             >
               <Typography style={{ width: "100%", textAlign: "center" }}>
                 Manager | Assistant manager
               </Typography>
             </AccordionSummary>
             <AccordionDetails>
-              <Typography>
-                <ul>
-                  {data.cv.experience.mgr.map((item, i) => {
-                    return <li key={i}>{item}</li>;
-                  })}
-                </ul>
-              </Typography>
+              {data.cv.experience.mgr.map((item, i) => {
+                return <Typography key={i}>{item}</Typography>;
+              })}
             </AccordionDetails>
           </Accordion>
         </Collapse>
@@ -270,46 +229,29 @@ export const CV = () => {
           languages
         </Button>
         <Collapse in={languages}>
-          <Accordion
-            expanded={expanded === "panel4"}
-            onChange={handleChange("panel4")}
-          >
-            <AccordionDetails
-              aria-controls="panel4d-content"
-              id="panel4d-header"
-            >
-              <Typography>
-                <ul>
-                  {data.cv.languages.map((item, i) => {
-                    return <li key={i}>{item}</li>;
-                  })}
-                </ul>
-              </Typography>
+          <Accordion>
+            <AccordionDetails>
+              {data.cv.languages.map((item, i) => {
+                return <Typography key={i}>{item}</Typography>;
+              })}
             </AccordionDetails>
           </Accordion>
           <Accordion
-            expanded={expanded === "panel4"}
-            onChange={handleChange("panel4")}
+            expanded={expanded === "panel6"}
+            onChange={handleChange("panel6")}
           >
             <AccordionSummary
-              aria-controls="panel8d-content"
-              id="panel8d-header"
+              aria-controls="panel6d-content"
+              id="panel6d-header"
             >
               <Typography style={{ width: "100%", textAlign: "center" }}>
-                Certificate
+                Certificates
               </Typography>
             </AccordionSummary>
-            <AccordionDetails
-              aria-controls="panel4d-content"
-              id="panel4d-header"
-            >
-              <Typography>
-                <ul>
-                  {data.cv.certificates.map((item, i) => {
-                    return <li key={i}>{item}</li>;
-                  })}
-                </ul>
-              </Typography>
+            <AccordionDetails>
+              {data.cv.certificates.map((item, i) => {
+                return <Typography key={i}>{item}</Typography>;
+              })}
             </AccordionDetails>
           </Accordion>
         </Collapse>
