@@ -3,10 +3,7 @@ import { LinkHome, LinkProjects, LinkCV, LinkContact } from "./Links";
 import {
   Button,
   List,
-  // ListItemText,
   Collapse,
-  // Divider,
-  // Link,
   Typography,
   AccordionDetails,
   AccordionSummary,
@@ -15,7 +12,6 @@ import {
 import {
   Person,
   School,
-  // Code,
   Language,
   WorkHistory,
   ExpandLess,
@@ -23,7 +19,7 @@ import {
   Mail,
   LinkedIn,
   GitHub,
-  // ArrowForwardIosSharp,
+  PictureAsPdf,
 } from "@mui/icons-material";
 import data from "../data/projects.json";
 
@@ -47,7 +43,7 @@ export const CV = () => {
         <LinkContact />
       </nav>
       <div className="img"></div>
-      <List>
+      <List style={{ paddingTop: "0" }}>
         <Button
           onClick={() => setProfile(!profile)}
           variant={profile ? "contained" : "outlined"}
@@ -116,12 +112,13 @@ export const CV = () => {
         </Button>
         <Collapse in={education}>
           <Accordion
-            expanded={expanded === "panel1"}
-            onChange={handleChange("panel1")}
+            expanded={expanded === "panel0"}
+            onChange={handleChange("panel0")}
           >
             <AccordionSummary
-              aria-controls="panel1d-content"
-              id="panel1d-header"
+              aria-controls="panel0d-content"
+              id="panel0d-header"
+              expandIcon={<ExpandMore />}
             >
               <Typography style={{ width: "100%", textAlign: "center" }}>
                 Web and software development
@@ -134,12 +131,35 @@ export const CV = () => {
             </AccordionDetails>
           </Accordion>
           <Accordion
+            expanded={expanded === "panel1"}
+            onChange={handleChange("panel1")}
+          >
+            <AccordionSummary
+              aria-controls="panel1d-content"
+              id="panel1d-header"
+              expandIcon={<ExpandMore />}
+            >
+              <Typography style={{ width: "100%", textAlign: "center" }}>
+                Certificates
+              </Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>
+                DCI - Certificate
+                <a href={data.cv.pdf.certificateDCI}>
+                  <PictureAsPdf style={{ margin: "0  0 -0.4rem 0.5rem" }} />
+                </a>
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+          <Accordion
             expanded={expanded === "panel2"}
             onChange={handleChange("panel2")}
           >
             <AccordionSummary
               aria-controls="panel2d-content"
               id="panel2d-header"
+              expandIcon={<ExpandMore />}
             >
               <Typography style={{ width: "100%", textAlign: "center" }}>
                 Catering expert
@@ -170,6 +190,7 @@ export const CV = () => {
             <AccordionSummary
               aria-controls="panel3d-content"
               id="panel3d-header"
+              expandIcon={<ExpandMore />}
             >
               <Typography style={{ width: "100%", textAlign: "center" }}>
                 Web and software development
@@ -188,6 +209,7 @@ export const CV = () => {
             <AccordionSummary
               aria-controls="panel4d-content"
               id="panel4d-header"
+              expandIcon={<ExpandMore />}
             >
               <Typography style={{ width: "100%", textAlign: "center" }}>
                 McDonald's Germany LLC
@@ -206,6 +228,7 @@ export const CV = () => {
             <AccordionSummary
               aria-controls="panel5d-content"
               id="panel5d-header"
+              expandIcon={<ExpandMore />}
             >
               <Typography style={{ width: "100%", textAlign: "center" }}>
                 Manager | Assistant manager
@@ -243,6 +266,7 @@ export const CV = () => {
             <AccordionSummary
               aria-controls="panel6d-content"
               id="panel6d-header"
+              expandIcon={<ExpandMore />}
             >
               <Typography style={{ width: "100%", textAlign: "center" }}>
                 Certificates
