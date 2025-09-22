@@ -20,6 +20,10 @@ const resources = {
         ctaProjects: "Projekte ansehen",
         ctaContact: "Kontakt",
       },
+      about: {
+        languagesLine:
+          "Sprachen: Englisch (C1, DCI-Zertifikat), Deutsch (C2, Muttersprache), Russisch (C2, Muttersprache), Tscherkessisch (C2, Muttersprache).",
+      },
       footer: { imprint: "Impressum", privacy: "Datenschutz" },
     },
   },
@@ -40,6 +44,10 @@ const resources = {
         ctaProjects: "View Projects",
         ctaContact: "Contact",
       },
+      about: {
+        languagesLine:
+          "Languages: English (C1, DCI certificate), German (C2, native), Russian (C2, native), Circassian (C2, native).",
+      },
       footer: { imprint: "Imprint", privacy: "Privacy" },
     },
   },
@@ -50,7 +58,7 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    fallbackLng: "de",
+    fallbackLng: "en",
     defaultNS: "common",
     detection: {
       // 1) localStorage → 2) navigator.language → 3) html lang → 4) fallback
@@ -61,8 +69,9 @@ i18n
   });
 
 // set <html lang="...">
+document.documentElement.setAttribute("lang", i18n.resolvedLanguage || "en");
 i18n.on("languageChanged", (lng) => {
-  document.documentElement.setAttribute("lang", lng || "de");
+  document.documentElement.setAttribute("lang", lng || "en");
 });
 
 export default i18n;
