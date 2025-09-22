@@ -1,12 +1,10 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 /* Smooth scrolling for anchor navigation */
 html { scroll-behavior: smooth; }
 
 @layer components {
-  .container-max { @apply mx-auto max-w-5xl px-4; }
+  .container-max { @apply mx-auto max-w-screen-xl px-4; }
   .btn { @apply inline-flex items-center justify-center rounded-2xl px-4 py-2 font-medium border shadow-sm transition hover:shadow; }
   .input { @apply w-full rounded-2xl border px-3 py-2 shadow-sm focus:outline-none focus:ring; }
 }
