@@ -1,10 +1,25 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
+    <title>
+      My Projects - A collection of my personal and professional projects
+    </title>
+    <script>
+      (function () {
+        try {
+          const ls = localStorage.getItem("theme"); // 'dark' | 'light' | null
+          const sys = window.matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light";
+          const theme = ls || sys || "dark";
+          if (theme === "dark") document.documentElement.classList.add("dark");
+          document.documentElement.setAttribute("data-theme", theme);
+        } catch (_) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
