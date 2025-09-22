@@ -8,7 +8,7 @@ const TURNSTILE_SITEKEY = import.meta.env.VITE_TURNSTILE_SITEKEY;
 declare global {
   interface Window {
     turnstile?: {
-      render: (el: HTMLElement, opts: any) => string;
+      render: (el: HTMLElement, opts: Record<string, unknown>) => string;
       reset: (widgetId?: string) => void;
     };
   }
