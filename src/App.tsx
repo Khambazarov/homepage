@@ -1,6 +1,7 @@
 import { Nav } from "./components/Nav";
 import { Section } from "./components/Section";
 import { ProjectCard } from "./components/ProjectCard";
+import { ContactForm } from "./components/ContactForm";
 import { useTranslation } from "react-i18next";
 
 export default function App() {
@@ -74,7 +75,7 @@ export default function App() {
           {/* TODO */}
         </Section>
         <Section id="contact" title={t("nav.contact")}>
-          {/* TODO */}
+          <ContactForm />
         </Section>
       </main>
 
