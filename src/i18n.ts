@@ -16,7 +16,7 @@ const resources = {
       hero: {
         title: "Hallo, ich bin Renat.",
         subtitle:
-          "Web & Software Engineer (MERN). Ich baue moderne, zugängliche UIs und skalierbare Services.",
+          "Web & Software Entwickler (MERN). Ich baue moderne, zugängliche UIs und skalierbare Services.",
         ctaProjects: "Projekte ansehen",
         ctaContact: "Kontakt",
       },
@@ -40,7 +40,7 @@ const resources = {
       hero: {
         title: "Hello, I’m Renat.",
         subtitle:
-          "Web & Software Engineer (MERN). I build modern, accessible UIs and scalable services.",
+          "Web & Software Developer (MERN). I build modern, accessible UIs and scalable services.",
         ctaProjects: "View Projects",
         ctaContact: "Contact",
       },
