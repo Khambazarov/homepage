@@ -2,6 +2,8 @@ import { Nav } from "./components/Nav";
 import { Section } from "./components/Section";
 import { ProjectCard } from "./components/ProjectCard";
 import { ContactForm } from "./components/ContactForm";
+import { ExperienceItem } from "./components/ExperienceItem";
+import { SkillsGrid } from "./components/SkillsGrid";
 import { useTranslation } from "react-i18next";
 
 export default function App() {
@@ -69,11 +71,66 @@ export default function App() {
           </div>
         </Section>
         <Section id="experience" title={t("nav.experience")}>
-          {/* TODO */}
+          <div className="grid gap-6">
+            <ExperienceItem
+              role="Tutor / Web & Software Engineer"
+              company="DCI — Digital Career Institute"
+              period="2024 — heute"
+              bullets={[
+                "Guided students through MERN stack projects (React, Node, Express, MongoDB).",
+                "Code reviews, debugging sessions, best practices and accessibility.",
+              ]}
+            />
+            <ExperienceItem
+              role="Full-Stack Developer (Freelance)"
+              company="Self-employed"
+              period="2022 — heute"
+              bullets={[
+                "Delivered small apps and websites with React, TypeScript and Node.",
+                "Set up CI/CD, hosting, and domain/DNS for clients.",
+              ]}
+            />
+          </div>
         </Section>
+
         <Section id="skills" title={t("nav.skills")}>
-          {/* TODO */}
+          <SkillsGrid
+            categories={[
+              {
+                name: "Frontend",
+                items: [
+                  "React",
+                  "JavaScript",
+                  "TypeScript",
+                  "Tailwind CSS",
+                  "Vite",
+                ],
+              },
+              {
+                name: "Backend",
+                items: ["Node.js", "Express", "REST APIs", "Socket.io"],
+              },
+              {
+                name: "Data & Infra",
+                items: ["MongoDB", "Mongoose", "Linux", "Git/GitHub", "CI/CD"],
+              },
+              {
+                name: "Serverless",
+                items: ["Vercel", "Netlify", "Render", "DigitalOcean"],
+              },
+              {
+                name: "Languages",
+                items: [
+                  "English — C1 (DCI certificate)",
+                  "German — native (C2)",
+                  "Russian — native (C2)",
+                  "Circassian — native (C2)",
+                ],
+              },
+            ]}
+          />
         </Section>
+
         <Section id="contact" title={t("nav.contact")}>
           <ContactForm />
         </Section>
