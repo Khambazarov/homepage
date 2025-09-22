@@ -1,5 +1,6 @@
 import { Nav } from "./components/Nav";
 import { Section } from "./components/Section";
+import { ProjectCard } from "./components/ProjectCard";
 import { useTranslation } from "react-i18next";
 
 export default function App() {
@@ -36,7 +37,30 @@ export default function App() {
         </Section>
 
         <Section id="projects" title={t("nav.projects")}>
-          {/* TODO */}
+          <div className="grid gap-6 md:grid-cols-2">
+            <ProjectCard
+              title="Realtime Chat App"
+              desc="Full-stack chat with authentication and websockets."
+              stack={[
+                "React",
+                "JavaScript",
+                "Tailwind",
+                "Node",
+                "Express",
+                "Socket.io",
+                "MongoDB",
+              ]}
+              live="https://hello-word.khambazarov.dev/"
+              repo="https://github.com/Khambazarov/hello-word/"
+            />
+            <ProjectCard
+              title="Hello World Mailer"
+              desc="Minimal demo for transactional email delivery."
+              stack={["Node", "Express", "Nodemailer"]}
+              live="https://hello-word.khambazarov.dev"
+              repo="https://github.com/Khambazarov/hello-world"
+            />
+          </div>
         </Section>
         <Section id="experience" title={t("nav.experience")}>
           {/* TODO */}
