@@ -2,15 +2,55 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>
-      My Projects - A collection of my personal and professional projects
-    </title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+
+    <!-- Primary Meta -->
+    <title>Renat Khambazarov — Portfolio</title>
+    <meta
+      name="description"
+      content="Web & Software Developer (MERN). Modern UIs, accessible UX, and scalable services."
+    />
+    <link rel="canonical" href="https://khambazarov.dev/" />
+
+    <!-- Open Graph (LinkedIn, Slack, etc.) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Khambazarov.dev" />
+    <meta property="og:title" content="Renat Khambazarov — Portfolio" />
+    <meta
+      property="og:description"
+      content="Web & Software Developer (MERN). Modern UIs, accessible UX, and scalable services."
+    />
+    <meta property="og:url" content="https://khambazarov.dev/" />
+    <meta property="og:image" content="/og.png" />
+
+    <!-- Structured Data (Google) -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Renat Khambazarov",
+        "url": "https://khambazarov.dev/",
+        "jobTitle": "Web & Software Developer",
+        "sameAs": [
+          "https://github.com/Khambazarov",
+          "https://www.linkedin.com/in/khambazarov/"
+        ]
+      }
+    </script>
+
+    <!-- Icons -->
+    <link rel="icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#0b0b0b" />
+
+    <!-- Theme bootstrap (persisted -> system -> dark) -->
     <script>
       (function () {
         try {
-          const ls = localStorage.getItem("theme"); // 'dark' | 'light' | null
+          const ls = localStorage.getItem("theme");
           const sys = window.matchMedia("(prefers-color-scheme: dark)").matches
             ? "dark"
             : "light";
