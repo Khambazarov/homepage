@@ -12,7 +12,7 @@ export default function App() {
   return (
     <>
       <Nav />
-      <main className="container-max">
+      <main id="content" className="container-max">
         <Section id="home">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
             {t("hero.title")}
