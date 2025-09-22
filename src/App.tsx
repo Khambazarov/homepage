@@ -42,13 +42,17 @@ export default function App() {
               title="Realtime Chat App"
               desc="Full-stack chat with authentication and websockets."
               stack={[
-                "React",
                 "JavaScript",
+                "React",
                 "Tailwind",
                 "Node",
                 "Express",
                 "Socket.io",
+                "Socket.io-Client",
                 "MongoDB",
+                "Mongoose",
+                "express-session",
+                "bcrypt",
               ]}
               live="https://hello-word.khambazarov.dev/"
               repo="https://github.com/Khambazarov/hello-word/"
@@ -57,8 +61,9 @@ export default function App() {
               title="Hello World Mailer"
               desc="Minimal demo for transactional email delivery."
               stack={["Node", "Express", "Nodemailer"]}
-              live="https://hello-word.khambazarov.dev"
-              repo="https://github.com/Khambazarov/hello-world"
+              live="https://hello-word.khambazarov.dev/"
+              repo="https://github.com/Khambazarov/hello-word/"
+              status="wip"
             />
           </div>
         </Section>
