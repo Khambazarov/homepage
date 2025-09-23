@@ -42,7 +42,10 @@ export default function App() {
 
         <Section id="about" title={t("nav.about")}>
           <p className="text-gray-700 dark:text-gray-300 max-w-prose">
-            Short intro, USP, and tech focus.
+            {t("about.intro")}
+          </p>
+          <p className="mt-2 text-gray-700 dark:text-gray-300 max-w-prose">
+            {t("about.cta")}
           </p>
         </Section>
 
@@ -52,17 +55,17 @@ export default function App() {
               title="Realtime Chat App"
               desc="Full-stack chat with authentication and websockets."
               stack={[
-                "JavaScript",
                 "React",
-                "Tailwind",
-                "Node",
-                "Express",
+                "JavaScript (ES6+)",
+                "Zod",
+                "Tailwind CSS",
+                "Node.js",
+                "Express.js",
                 "Socket.io",
-                "Socket.io-Client",
                 "MongoDB",
                 "Mongoose",
-                "express-session",
                 "bcrypt",
+                "express-session",
               ]}
               live="https://hello-word.khambazarov.dev/"
               repo="https://github.com/Khambazarov/hello-word/"
@@ -70,7 +73,7 @@ export default function App() {
             <ProjectCard
               title="Hello World Mailer"
               desc="Minimal demo for transactional email delivery."
-              stack={["Node", "Express", "Nodemailer"]}
+              stack={["Node.js", "Express.js", "Nodemailer"]}
               live="https://hello-word.khambazarov.dev/"
               repo="https://github.com/Khambazarov/hello-word/"
               status="wip"

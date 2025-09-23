@@ -22,6 +22,9 @@ const resources = {
         ctaContact: "Kontakt",
       },
       about: {
+        intro:
+          "Ich entwickle moderne, zugängliche Frontends mit React/TypeScript und solide Backends mit Node.js/Express. Fokus: saubere Architektur, Performance und pragmatische DX.",
+        cta: "Aktuell offen für spannende Projekte und Chancen.",
         languagesLine:
           "Sprachen: Englisch (C1, DCI-Zertifikat), Deutsch (C2, Muttersprache), Russisch (C2, Muttersprache), Tscherkessisch (C2, Muttersprache).",
       },
@@ -47,6 +50,9 @@ const resources = {
         ctaContact: "Contact",
       },
       about: {
+        intro:
+          "I build modern, accessible frontends with React/TypeScript and solid backends with Node.js/Express. Focus: clean architecture, performance, and pragmatic DX.",
+        cta: "Currently open to exciting projects and opportunities.",
         languagesLine:
           "Languages: English (C1, DCI certificate), German (C2, native), Russian (C2, native), Circassian (C2, native).",
       },
