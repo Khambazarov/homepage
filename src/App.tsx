@@ -11,8 +11,15 @@ export default function App() {
 
   return (
     <>
+      <a
+        href="#main"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-white dark:focus:bg-neutral-900 focus:text-black dark:focus:text-white focus:px-3 focus:py-2 focus:shadow"
+      >
+        {t("skipToContent")}
+      </a>
+
       <Nav />
-      <main id="content" className="container-max">
+      <main id="main" className="container-max">
         <Section id="home">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
             {t("hero.title")}

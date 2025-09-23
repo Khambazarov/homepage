@@ -5,6 +5,7 @@ import LanguageDetector from "i18next-browser-languagedetector";
 const resources = {
   de: {
     common: {
+      skipToContent: "Zum Inhalt springen",
       nav: {
         home: "Start",
         about: "Über mich",
@@ -29,6 +30,7 @@ const resources = {
   },
   en: {
     common: {
+      skipToContent: "Skip to content",
       nav: {
         home: "Home",
         about: "About",
