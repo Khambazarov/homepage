@@ -15,50 +15,64 @@ export function ProjectCard({
   repo,
   status = "live",
 }: Props) {
-  const isWip = status === "wip";
+  const wip = status === "wip";
+
   return (
     <article
-      className={`rounded-2xl border p-5 shadow-sm ${
-        isWip ? "opacity-95" : ""
-      }`}
+      className={[
+        "group rounded-2xl border p-5 shadow-sm",
+        "transition-[transform,box-shadow] duration-200 ease-out motion-reduce:transition-none",
+        "hover:-translate-y-0.5 hover:shadow-md",
+        wip ? "opacity-95" : "",
+      ].join(" ")}
     >
+      {/* WIP-Badge */}
       <div className="flex items-start gap-3">
-        <h3 className="text-xl font-semibold">{title}</h3>
-        {isWip && (
+        <h3 className="text-xl font-semibold tracking-tight">{title}</h3>
+        {wip && (
           <span
-            className="ml-auto rounded-full border px-2 py-0.5 text-xs font-medium text-gray-700 dark:text-gray-200"
+            className="ml-auto inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium text-gray-700 dark:text-gray-200"
             aria-label="Work in progress"
             title="Work in progress"
           >
-            In&nbsp;Progress…
+            <span className="inline-block h-1.5 w-1.5 rounded-full bg-amber-500" />
+            In&nbsp;Progress
           </span>
         )}
       </div>
 
-      {/* Beschreibung */}
-      <p className="mt-2 text-gray-600 dark:text-gray-300">{desc}</p>
+      <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">{desc}</p>
 
-      {/* Tech-Stack */}
-      <div className="mt-3 flex flex-wrap gap-2">
-        {stack.map((s) => (
-          <span key={s} className="rounded-xl border px-2 py-1 text-xs">
-            {s}
-          </span>
-        ))}
-      </div>
+      {/* Tech-Stack Chips */}
+      {stack?.length > 0 && (
+        <ul className="mt-3 flex flex-wrap gap-2">
+          {stack.map((s) => (
+            <li
+              key={s}
+              className="rounded-md border px-2 py-0.5 text-xs text-gray-700 dark:text-gray-200"
+            >
+              {s}
+            </li>
+          ))}
+        </ul>
+      )}
 
-      {/* CTAs */}
+      {/* Actions */}
       <div className="mt-4 flex gap-3">
         {/* Live */}
         {live ? (
-          <a className="btn" href={live} target="_blank" rel="noreferrer">
+          <a
+            className="btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gray-900 dark:focus-visible:ring-gray-100"
+            href={live}
+            target="_blank"
+            rel="noreferrer"
+          >
             Live
           </a>
         ) : (
           <button
-            className="btn opacity-60 cursor-not-allowed"
+            className="btn cursor-not-allowed opacity-60"
             aria-disabled="true"
-            disabled
             title="Not available yet"
             type="button"
           >
@@ -68,14 +82,18 @@ export function ProjectCard({
 
         {/* Repo */}
         {repo ? (
-          <a className="btn" href={repo} target="_blank" rel="noreferrer">
+          <a
+            className="btn focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-gray-900 dark:focus-visible:ring-gray-100"
+            href={repo}
+            target="_blank"
+            rel="noreferrer"
+          >
             GitHub
           </a>
         ) : (
           <button
-            className="btn opacity-60 cursor-not-allowed"
+            className="btn cursor-not-allowed opacity-60"
             aria-disabled="true"
-            disabled
             title="Not available yet"
             type="button"
           >
