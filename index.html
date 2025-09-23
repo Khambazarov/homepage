@@ -14,6 +14,22 @@
       content="Web & Software Developer (MERN). Modern UIs, accessible UX, and scalable services."
     />
     <link rel="canonical" href="https://portfolio.khambazarov.dev/" />
+    <!-- Performance: Preconnects für externe Endpunkte -->
+    <link
+      rel="preconnect"
+      href="https://challenges.cloudflare.com"
+      crossorigin
+    />
+    <link rel="preconnect" href="https://formspree.io" crossorigin />
+
+    <!-- Security/BP: Referrer-Policy -->
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+    <!-- Open Graph: absolute URL (falls noch nicht geändert) -->
+    <meta
+      property="og:image"
+      content="https://portfolio.khambazarov.dev/og.png"
+    />
 
     <!-- Open Graph (LinkedIn, Slack, etc.) -->
     <meta property="og:type" content="website" />
@@ -70,6 +86,23 @@
       async
       defer
     ></script>
+    <noscript>
+      <style>
+        .cf-turnstile {
+          display: none !important;
+        }
+      </style>
+      <div
+        role="alert"
+        style="
+          padding: 8px;
+          border: 1px solid #aaa;
+          border-radius: 8px;
+          margin-top: 8px;
+        ">
+        JavaScript is required to submit this form (spam protection).
+      </div>
+    </noscript>
   </head>
   <body>
     <div id="root"></div>
