@@ -19,7 +19,7 @@ export default function App() {
       </a>
 
       <Nav />
-      <main id="main" className="container-max">
+      <main id="main" role="main" className="container-max">
         <Section id="home">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
             {t("hero.title")}
@@ -83,18 +83,18 @@ export default function App() {
         <Section id="experience" title={t("nav.experience")}>
           <div className="grid gap-6">
             <ExperienceItem
-              role="Tutor / Web & Software Engineer"
+              role="Tutor / Web & Software Developmer (Part-Time, Remote)"
               company="DCI — Digital Career Institute"
-              period="2024 — heute"
+              period="2024 — 2025"
               bullets={[
-                "Guided students through MERN stack projects (React, Node, Express, MongoDB).",
+                "Guided students through MERN stack projects (JavaScript, React, Node, Express, MongoDB).",
                 "Code reviews, debugging sessions, best practices and accessibility.",
               ]}
             />
             <ExperienceItem
-              role="Full-Stack Developer (Freelance)"
-              company="Self-employed"
-              period="2022 — heute"
+              role="Full-Stack Developer (Full-Time, Remote)"
+              company="DCI — Digital Career Institute"
+              period="2021 — 2025"
               bullets={[
                 "Delivered small apps and websites with React, TypeScript and Node.",
                 "Set up CI/CD, hosting, and domain/DNS for clients.",
