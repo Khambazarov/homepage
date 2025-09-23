@@ -62,15 +62,16 @@ i18n
     resources,
     fallbackLng: "en",
     defaultNS: "common",
+    supportedLngs: ["de", "en"],
+    nonExplicitSupportedLngs: true, // mappt z.B. de-DE → de
     detection: {
-      // 1) localStorage → 2) navigator.language → 3) html lang → 4) fallback
       order: ["localStorage", "navigator", "htmlTag"],
       caches: ["localStorage"],
     },
     interpolation: { escapeValue: false },
   });
 
-// set <html lang="...">
+// <html lang="...">
 document.documentElement.setAttribute("lang", i18n.resolvedLanguage || "en");
 i18n.on("languageChanged", (lng) => {
   document.documentElement.setAttribute("lang", lng || "en");
