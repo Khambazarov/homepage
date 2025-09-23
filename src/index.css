@@ -1,10 +1,65 @@
 @import "tailwindcss";
 
 /* Smooth scrolling for anchor navigation */
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+}
 
+/* --- Base: Theme + accessible focus rings --- */
+@layer base {
+  body {
+    @apply bg-white text-gray-900 dark:bg-neutral-900 dark:text-gray-100;
+  }
+
+  /* Sichtbarer Tastaturfokus (WCAG 2.4.7), sauber mit Theme-Offset */
+  :where(a, button, [role="button"], input, select, textarea):focus-visible {
+    @apply outline-none ring-2 ring-offset-2 ring-gray-900 dark:ring-gray-100
+           ring-offset-white dark:ring-offset-neutral-900 rounded-md;
+  }
+
+  /* Dezentere Link-Transitions */
+  a {
+    @apply transition-colors duration-150;
+  }
+  a:hover {
+    @apply text-gray-900 dark:text-gray-50;
+  }
+}
+
+/* --- Components: deine Klassen + kleine Upgrades --- */
 @layer components {
-  .container-max { @apply mx-auto max-w-screen-xl px-4; }
-  .btn { @apply inline-flex items-center justify-center rounded-2xl px-4 py-2 font-medium border shadow-sm transition hover:shadow; }
-  .input { @apply w-full rounded-2xl border px-3 py-2 shadow-sm focus:outline-none focus:ring; }
+  /* Beibehaltener Container von dir */
+  .container-max {
+    @apply mx-auto max-w-screen-xl px-4;
+  }
+
+  /* Primärbutton – wie bei dir, plus Theme-Farben und Disabled-State */
+  .btn {
+    @apply inline-flex items-center justify-center rounded-2xl px-4 py-2
+           font-medium border shadow-sm transition hover:shadow
+           bg-gray-900 text-white dark:bg-white dark:text-gray-900;
+  }
+  .btn:disabled,
+  .btn[aria-disabled="true"] {
+    @apply opacity-60 cursor-not-allowed;
+  }
+
+  /* Inputs – wie bei dir, plus Theme-Farben & Placeholder-Kontrast */
+  .input {
+    @apply w-full rounded-2xl border px-3 py-2 shadow-sm
+           focus:outline-none focus:ring
+           bg-white dark:bg-neutral-900
+           text-gray-900 dark:text-gray-100
+           placeholder:text-gray-400 dark:placeholder:text-gray-500;
+  }
+}
+
+/* --- Respect reduced motion --- */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    -webkit-animation: none !important;
+    animation: none !important;
+    -webkit-transition: none !important;
+    transition: none !important;
+  }
 }
