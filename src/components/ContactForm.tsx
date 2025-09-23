@@ -5,11 +5,11 @@ type State = "idle" | "loading" | "ok" | "err";
 const FORMSPREE_ID = import.meta.env.VITE_FORMSPREE_ID;
 const TURNSTILE_SITEKEY = import.meta.env.VITE_TURNSTILE_SITEKEY;
 
-// Cloudflare Turnstile ist global über das Script in index.html verfügbar
+// Cloudflare Turnstile global (über <script> in index.html)
 declare global {
   interface Window {
     turnstile?: {
-      render: (el: HTMLElement, opts: Record<string, any>) => void;
+      render: (el: HTMLElement, opts: Record<string, unknown>) => string; // <- gibt Widget-ID zurück
       reset: (widgetId?: string) => void;
     };
   }
@@ -21,19 +21,28 @@ export function ContactForm() {
   const widgetRef = useRef<HTMLDivElement | null>(null);
   const widgetIdRef = useRef<string | null>(null);
 
-  // Widget (re)rendern – initial und wenn sich das Theme ändert
+  // Turnstile mounten & bei Theme-Wechsel neu rendern
   useEffect(() => {
     const root = document.documentElement;
 
     function renderWidget() {
       if (!widgetRef.current || !window.turnstile) return;
-      // evtl. altes Widget zurücksetzen
-      try { window.turnstile.reset(widgetIdRef.current ?? undefined); } catch {}
-      const theme = root.getAttribute("data-theme") === "dark" ? "dark" : "light";
 
-      widgetRef.current.innerHTML = ""; // clean mount
-      // Turnstile rendert und gibt eine Widget-ID zurück – einige Bundles geben die ID über data-widget-id zurück
-      window.turnstile.render(widgetRef.current, {
+      // ggf. altes Widget zurücksetzen
+      try {
+        if (widgetIdRef.current) window.turnstile.reset(widgetIdRef.current);
+      } catch {
+        // ignore
+      }
+
+      const theme =
+        root.getAttribute("data-theme") === "dark" ? "dark" : "light";
+
+      // Clean mount
+      widgetRef.current.innerHTML = "";
+
+      // Rendern und Widget-ID merken
+      const id = window.turnstile.render(widgetRef.current, {
         sitekey: TURNSTILE_SITEKEY,
         theme,
         appearance: "always",
@@ -41,13 +50,18 @@ export function ContactForm() {
         "error-callback": () => setToken(null),
         "expired-callback": () => setToken(null),
       });
+
+      widgetIdRef.current = id || null;
     }
 
     renderWidget();
 
-    // auf Theme-Umschaltung reagieren (when user toggles theme in Nav)
+    // Auf Theme-Umschaltung reagieren
     const observer = new MutationObserver(() => renderWidget());
-    observer.observe(root, { attributes: true, attributeFilter: ["data-theme", "class"] });
+    observer.observe(root, {
+      attributes: true,
+      attributeFilter: ["data-theme", "class"],
+    });
 
     return () => observer.disconnect();
   }, []);
@@ -66,26 +80,35 @@ export function ContactForm() {
       return;
     }
 
-    // Turnstile-Token sicherstellen
+    // Captcha-Token erforderlich
     if (!token) {
       setState("err");
+      // Fokus ans Widget (falls möglich)
+      widgetRef.current?.querySelector("iframe")?.focus?.();
       return;
     }
     data.append("cf-turnstile-response", token);
 
     const endpoint = `https://formspree.io/f/${FORMSPREE_ID}`;
+
     try {
       const res = await fetch(endpoint, {
         method: "POST",
         headers: { Accept: "application/json" },
         body: data,
       });
+
       setState(res.ok ? "ok" : "err");
+
       if (res.ok) {
         form.reset();
         setToken(null);
-        // Nach erfolgreichem Submit Widget zurücksetzen (neues Token bei nächster Interaktion)
-        try { window.turnstile?.reset(widgetIdRef.current ?? undefined); } catch {}
+        // Neues Token für nächste Submission
+        try {
+          if (widgetIdRef.current) window.turnstile?.reset(widgetIdRef.current);
+        } catch {
+          // ignore
+        }
       }
     } catch {
       setState("err");
@@ -140,7 +163,10 @@ export function ContactForm() {
           name="message"
           required
           className="input min-h-32"
-          placeholder="How can I help?"
+          placeholder="Your message"
+          rows={8}
+          minLength={10}
+          aria-required="true"
           aria-label="Message"
         />
       </label>
