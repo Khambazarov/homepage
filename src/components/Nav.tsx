@@ -2,9 +2,6 @@ import { useTranslation } from "react-i18next";
 import { useEffect, useMemo, useState } from "react";
 import { useScrollSpy } from "../hooks/useScrollSpy";
 
-/**
- * Konfiguration der Sektionen (IDs müssen zu deinen <Section id="..."> passen)
- */
 const SECTIONS = [
   { id: "home", key: "nav.home" },
   { id: "about", key: "nav.about" },
@@ -15,19 +12,58 @@ const SECTIONS = [
 ] as const;
 
 export function Nav() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
+  // Scroll-Spy
   const ids = useMemo(() => SECTIONS.map((s) => s.id), []);
-  
   const activeId = useScrollSpy(ids, {
     rootMargin: "-35% 0px -55% 0px",
     threshold: [0, 0.25, 0.5, 0.75, 1],
   });
-
-  // Kleine State-Optimierung, um Re-Renders bei schnellem Scrollen zu dämpfen
   const [current, setCurrent] = useState<string | null>(null);
   useEffect(() => {
     if (activeId !== current) setCurrent(activeId);
   }, [activeId, current]);
+
+  // Theme-State (Icon steuern) – initial aus DOM ableiten
+  const [isDark, setIsDark] = useState<boolean>(() =>
+    document.documentElement.classList.contains("dark")
+  );
+  // Bootstrapping aus localStorage (falls vorhanden)
+  useEffect(() => {
+    try {
+      const theme = localStorage.getItem("theme");
+      if (theme === "dark" || theme === "light") {
+        const root = document.documentElement;
+        root.classList.toggle("dark", theme === "dark");
+        root.setAttribute("data-theme", theme);
+        setIsDark(theme === "dark");
+      }
+    } catch {
+      /* noop */
+    }
+  }, []);
+
+  function toggleTheme() {
+    const root = document.documentElement;
+    const next = root.classList.contains("dark") ? "light" : "dark";
+    root.classList.toggle("dark", next === "dark");
+    root.setAttribute("data-theme", next);
+    try {
+      localStorage.setItem("theme", next);
+    } catch {
+      /* noop */
+    }
+    setIsDark(next === "dark");
+  }
+
+  // Language toggle (persistiert via i18next-browser-languagedetector)
+  const lng = (i18n.resolvedLanguage || i18n.language || "en").toLowerCase();
+  const isDE = lng.startsWith("de");
+  const isEN = lng.startsWith("en");
+  function setLang(code: "de" | "en") {
+    if (!lng.startsWith(code)) i18n.changeLanguage(code);
+  }
 
   return (
     <header className="sticky top-0 z-40 border-b bg-white/80 backdrop-blur-md dark:bg-neutral-900/70">
@@ -37,7 +73,7 @@ export function Nav() {
           Renat Khambazarov
         </a>
 
-        {/* Primäre Nav */}
+        {/* Primary nav */}
         <ul className="hidden items-center gap-4 md:flex">
           {SECTIONS.map(({ id, key }) => {
             const isActive = current === id;
@@ -47,17 +83,12 @@ export function Nav() {
                   href={`#${id}`}
                   aria-current={isActive ? "page" : undefined}
                   className={[
-                    // Grundstil
                     "relative inline-flex items-center px-2 py-1 text-sm transition-colors",
                     "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100",
-                    // Aktiver Zustand
-                    isActive
-                      ? "text-gray-900 dark:text-white"
-                      : "text-gray-600 dark:text-gray-300",
+                    isActive ? "text-gray-900 dark:text-white" : "",
                   ].join(" ")}
                 >
                   {t(key)}
-                  {/* Aktiver Indikator (dezent) */}
                   <span
                     aria-hidden="true"
                     className={[
@@ -74,9 +105,53 @@ export function Nav() {
           })}
         </ul>
 
-        {/* Mobile „Zum Kontakt“-Shortcut (pragmatisch ohne Burger) */}
-        <div className="md:hidden">
-          <a href="#contact" className="btn text-sm px-3 py-1.5">
+        {/* Actions: Language + Theme + Mobile CTA */}
+        <div className="flex items-center gap-2">
+          {/* Language toggle (Desktop) */}
+          <div className="hidden md:flex items-center gap-1" aria-label="Language">
+            <button
+              type="button"
+              onClick={() => setLang("de")}
+              className={[
+                "px-2 py-1 text-xs rounded-md border",
+                isDE
+                  ? "bg-gray-900 text-white dark:bg-white dark:text-gray-900"
+                  : "bg-transparent text-gray-700 dark:text-gray-200",
+              ].join(" ")}
+              aria-pressed={isDE}
+              title="Deutsch"
+            >
+              DE
+            </button>
+            <button
+              type="button"
+              onClick={() => setLang("en")}
+              className={[
+                "px-2 py-1 text-xs rounded-md border",
+                isEN
+                  ? "bg-gray-900 text-white dark:bg-white dark:text-gray-900"
+                  : "bg-transparent text-gray-700 dark:text-gray-200",
+              ].join(" ")}
+              aria-pressed={isEN}
+              title="English"
+            >
+              EN
+            </button>
+          </div>
+
+          {/* Theme toggle */}
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="btn px-3 py-1.5 text-sm"
+            aria-label="Toggle dark / light"
+            title="Toggle dark / light"
+          >
+            {isDark ? "🌙" : "☀️"}
+          </button>
+
+          {/* Mobile CTA */}
+          <a href="#contact" className="btn text-sm px-3 py-1.5 md:hidden">
             {t("nav.contact")}
           </a>
         </div>
