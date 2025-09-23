@@ -36,7 +36,7 @@ export function ProjectCard({
             title="Work in progress"
           >
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-amber-500" />
-            In&nbsp;Progress
+            In Progress
           </span>
         )}
       </div>
