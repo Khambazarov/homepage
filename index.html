@@ -13,52 +13,24 @@
       name="description"
       content="Web & Software Developer (MERN). Modern UIs, accessible UX, and scalable services."
     />
-    <link rel="canonical" href="https://portfolio.khambazarov.dev/" />
-    <!-- Performance: Preconnects für externe Endpunkte -->
-    <link
-      rel="preconnect"
-      href="https://challenges.cloudflare.com"
-      crossorigin
-    />
-    <link rel="preconnect" href="https://formspree.io" crossorigin />
+    <link rel="canonical" href="https://portfolio-khambazarov.netlify.app/" />
 
-    <!-- Security/BP: Referrer-Policy -->
-    <meta name="referrer" content="strict-origin-when-cross-origin" />
-
-    <!-- Open Graph: absolute URL (falls noch nicht geändert) -->
-    <meta
-      property="og:image"
-      content="https://portfolio.khambazarov.dev/og.png"
-    />
-
-    <!-- Open Graph (LinkedIn, Slack, etc.) -->
+    <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Khambazarov.dev" />
+    <meta property="og:site_name" content="portfolio-khambazarov.netlify.app" />
     <meta property="og:title" content="Renat Khambazarov — Portfolio" />
     <meta
       property="og:description"
       content="Web & Software Developer (MERN). Modern UIs, accessible UX, and scalable services."
     />
-    <meta property="og:url" content="https://portfolio.khambazarov.dev/" />
+    <meta
+      property="og:url"
+      content="https://portfolio-khambazarov.netlify.app/"
+    />
     <meta
       property="og:image"
-      content="https://portfolio.khambazarov.dev/og.png"
+      content="https://portfolio-khambazarov.netlify.app/og.png"
     />
-
-    <!-- Structured Data (Google) -->
-    <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Renat Khambazarov",
-        "url": "https://portfolio.khambazarov.dev/",
-        "jobTitle": "Web & Software Developer",
-        "sameAs": [
-          "https://github.com/Khambazarov",
-          "https://www.linkedin.com/in/khambazarov/"
-        ]
-      }
-    </script>
 
     <!-- Icons (modern + Fallbacks) -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -67,11 +39,22 @@
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#0b0b0d" />
 
+    <!-- Performance: Preconnects -->
+    <link
+      rel="preconnect"
+      href="https://challenges.cloudflare.com"
+      crossorigin
+    />
+    <link rel="preconnect" href="https://formspree.io" crossorigin />
+
+    <!-- Security/BP -->
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+
     <!-- Theme bootstrap (persisted -> system -> dark) -->
     <script>
       (function () {
         try {
-          const ls = localStorage.getItem("theme");
+          const ls = localStorage.getItem("theme"); // 'dark' | 'light' | null
           const sys = window.matchMedia("(prefers-color-scheme: dark)").matches
             ? "dark"
             : "light";
@@ -81,13 +64,17 @@
         } catch (_) {}
       })();
     </script>
+
+    <!-- Cloudflare Turnstile (explicit render to avoid auto/double rendering) -->
     <script
-      src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+      src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
       async
       defer
     ></script>
   </head>
+
   <body>
+    <!-- No-JS Hinweis für das Kontaktformular (optional) -->
     <noscript>
       <style>
         .cf-turnstile {
@@ -100,13 +87,13 @@
           padding: 8px;
           border: 1px solid #aaa;
           border-radius: 8px;
-          margin-top: 8px;
+          margin: 8px;
         "
       >
-        JavaScript is required to submit this form (spam protection).
+        JavaScript is required to submit the contact form (spam protection).
       </div>
     </noscript>
-    
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -9,7 +9,7 @@ const TURNSTILE_SITEKEY = import.meta.env.VITE_TURNSTILE_SITEKEY;
 declare global {
   interface Window {
     turnstile?: {
-      render: (el: HTMLElement, opts: Record<string, unknown>) => string; // <- gibt Widget-ID zurück
+      render: (el: HTMLElement, opts: Record<string, unknown>) => string; // gibt Widget-ID zurück
       reset: (widgetId?: string) => void;
     };
   }
@@ -18,39 +18,40 @@ declare global {
 export function ContactForm() {
   const [state, setState] = useState<State>("idle");
   const [token, setToken] = useState<string | null>(null);
-  const widgetRef = useRef<HTMLDivElement | null>(null);
+
+  // Stabiler Wrapper; wir mounten das eigentliche Widget dynamisch darin
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
   const widgetIdRef = useRef<string | null>(null);
 
-  // Turnstile mounten & bei Theme-Wechsel neu rendern
   useEffect(() => {
     const root = document.documentElement;
 
     function renderWidget() {
-      if (!widgetRef.current || !window.turnstile) return;
+      if (!wrapperRef.current || !window.turnstile) return;
 
+      // Guard: ENV muss ein String sein
       if (typeof TURNSTILE_SITEKEY !== "string" || !TURNSTILE_SITEKEY) {
-        console.error(
-          "[Turnstile] Missing/invalid VITE_TURNSTILE_SITEKEY. Got:",
-          TURNSTILE_SITEKEY
-        );
+        console.error("[Turnstile] Missing/invalid VITE_TURNSTILE_SITEKEY");
         return;
       }
 
-      // ggf. altes Widget zurücksetzen
+      // Altes Widget zurücksetzen (best effort)
       try {
         if (widgetIdRef.current) window.turnstile.reset(widgetIdRef.current);
       } catch {
-        // ignore
+        /* noop */
       }
+
+      // Frischen Mount-Node verwenden, um Doppel-Render zu vermeiden
+      wrapperRef.current.innerHTML = "";
+      const mount = document.createElement("div");
+      wrapperRef.current.appendChild(mount);
 
       const theme =
         root.getAttribute("data-theme") === "dark" ? "dark" : "light";
 
-      // Clean mount
-      widgetRef.current.innerHTML = "";
-
-      // Rendern und Widget-ID merken
-      const id = window.turnstile.render(widgetRef.current, {
+      // Turnstile-Render & Widget-ID merken
+      const id = window.turnstile.render(mount, {
         sitekey: TURNSTILE_SITEKEY,
         theme,
         appearance: "always",
@@ -64,14 +65,21 @@ export function ContactForm() {
 
     renderWidget();
 
-    // Auf Theme-Umschaltung reagieren
-    const observer = new MutationObserver(() => renderWidget());
+    // Bei Theme-Änderung Widget neu mounten
+    const observer = new MutationObserver(renderWidget);
     observer.observe(root, {
       attributes: true,
       attributeFilter: ["data-theme", "class"],
     });
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      try {
+        if (widgetIdRef.current) window.turnstile?.reset(widgetIdRef.current);
+      } catch {
+        /* noop */
+      }
+    };
   }, []);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -92,7 +100,7 @@ export function ContactForm() {
     if (!token) {
       setState("err");
       // Fokus ans Widget (falls möglich)
-      widgetRef.current?.querySelector("iframe")?.focus?.();
+      wrapperRef.current?.querySelector("iframe")?.focus?.();
       return;
     }
     data.append("cf-turnstile-response", token);
@@ -111,11 +119,11 @@ export function ContactForm() {
       if (res.ok) {
         form.reset();
         setToken(null);
-        // Neues Token für nächste Submission
+        // Neues Token für nächsten Submit
         try {
           if (widgetIdRef.current) window.turnstile?.reset(widgetIdRef.current);
         } catch {
-          // ignore
+          /* noop */
         }
       }
     } catch {
@@ -189,9 +197,9 @@ export function ContactForm() {
         aria-hidden="true"
       />
 
-      {/* Turnstile-Widget */}
+      {/* Turnstile-Wrapper */}
       <div className="mt-2" aria-live="polite" aria-busy={state === "loading"}>
-        <div ref={widgetRef} className="cf-turnstile" />
+        <div ref={wrapperRef} />
         <p className="sr-only">
           This form is protected by Cloudflare Turnstile to prevent spam.
         </p>
@@ -201,7 +209,7 @@ export function ContactForm() {
         <button
           className="btn"
           type="submit"
-          disabled={state === "loading"}
+          disabled={state === "loading" || !token}
           aria-busy={state === "loading"}
         >
           {state === "loading" ? "Sending…" : "Send"}
