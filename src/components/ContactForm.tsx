@@ -28,6 +28,14 @@ export function ContactForm() {
     function renderWidget() {
       if (!widgetRef.current || !window.turnstile) return;
 
+      if (typeof TURNSTILE_SITEKEY !== "string" || !TURNSTILE_SITEKEY) {
+        console.error(
+          "[Turnstile] Missing/invalid VITE_TURNSTILE_SITEKEY. Got:",
+          TURNSTILE_SITEKEY
+        );
+        return;
+      }
+
       // ggf. altes Widget zurücksetzen
       try {
         if (widgetIdRef.current) window.turnstile.reset(widgetIdRef.current);
