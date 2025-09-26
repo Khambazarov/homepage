@@ -1,7 +1,12 @@
 @import "tailwindcss";
 
+/* Tailwind v4: Dark-Variant über Klasse ODER data-Attribut aktivieren */
+@custom-variant dark (&:where(.dark, .dark *, [data-theme="dark"], [data-theme="dark"] *));
+
 /* Smooth scrolling for anchor navigation */
-html { scroll-behavior: smooth; }
+html {
+  scroll-behavior: smooth;
+}
 
 /* --- Base: Theme + globaler, einheitlicher Focus-Ring (dein Pattern bleibt) --- */
 @layer base {
@@ -15,13 +20,19 @@ html { scroll-behavior: smooth; }
            ring-offset-white dark:ring-offset-neutral-900 rounded-md;
   }
 
-  a { @apply transition-colors duration-150; }
-  a:hover { @apply text-gray-900 dark:text-gray-50; }
+  a {
+    @apply transition-colors duration-150;
+  }
+  a:hover {
+    @apply text-gray-900 dark:text-gray-50;
+  }
 }
 
 /* --- Components --- */
 @layer components {
-  .container-max { @apply mx-auto max-w-screen-xl px-4; }
+  .container-max {
+    @apply mx-auto max-w-screen-xl px-4;
+  }
 
   /* NEUTRALER Button (border-only). Keine Farben erzwingen -> kein Dark/Light-Konflikt */
   .btn {
@@ -62,5 +73,8 @@ html { scroll-behavior: smooth; }
 
 /* --- Respect reduced motion --- */
 @media (prefers-reduced-motion: reduce) {
-  * { animation: none !important; transition: none !important; }
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
 }
