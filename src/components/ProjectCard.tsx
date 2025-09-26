@@ -64,12 +64,7 @@ export function ProjectCard({
           >
             <span className="inline-flex items-center gap-1">
               Live
-              <span
-                aria-hidden="true"
-                className="transition-transform motion-reduce:transform-none group-hover:translate-x-1"
-              >
-                →
-              </span>
+              <ArrowRightIcon className="transition-transform motion-reduce:transform-none group-hover:translate-x-1.5" />
             </span>
             <span className="sr-only"> (opens in new tab)</span>
           </a>
@@ -91,12 +86,7 @@ export function ProjectCard({
           >
             <span className="inline-flex items-center gap-1">
               GitHub
-              <span
-                aria-hidden="true"
-                className="transition-transform motion-reduce:transform-none group-hover:translate-x-1"
-              >
-                →
-              </span>
+              <ArrowRightIcon className="transition-transform motion-reduce:transform-none group-hover:translate-x-1.5" />
             </span>
             <span className="sr-only"> (opens in new tab)</span>
           </a>
@@ -131,7 +121,7 @@ function StatusBadge({ isWip }: { isWip: boolean }) {
   }
   return (
     <span
-      className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium text-gray-700 dark:text-gray-200"
+      className="text-nowrap inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium text-gray-700 dark:text-gray-200"
       aria-label="Status: Work in progress"
       title="Status: Work in progress"
     >
@@ -139,7 +129,7 @@ function StatusBadge({ isWip }: { isWip: boolean }) {
         className="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse motion-reduce:animate-none"
         aria-hidden="true"
       />
-      In&nbsp;Progress
+      In Progress
     </span>
   );
 }
@@ -190,6 +180,31 @@ function ButtonDisabled({ label, reason }: { label: string; reason: string }) {
     >
       {label}
     </button>
+  );
+}
+
+/* ------------ Icons ------------ */
+
+function ArrowRightIcon({ className = "" }: { className?: string }) {
+  // Größer (w-5 h-5), dicker (stroke-[2.5]), länger (lange Linie + Pfeilspitze).
+  // Inline-flex + items-center auf Button & Span → exakte vertikale Zentrierung.
+  return (
+    <svg
+      className={["w-5 h-5 stroke-[2.5] text-current", className].join(" ")}
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
+      {/* Lange Linie */}
+      <path d="M3 12h14" stroke="currentColor" strokeLinecap="round" />
+      {/* Pfeilspitze */}
+      <path
+        d="M13 6l6 6-6 6"
+        stroke="currentColor"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }
 
