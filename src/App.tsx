@@ -1,13 +1,44 @@
+import { useEffect, useMemo } from "react";
+import { useScrollSpy } from "./hooks/useScrollSpy";
+import { useTranslation } from "react-i18next";
+
 import { Nav } from "./components/Nav";
 import { Section } from "./components/Section";
 import { ProjectCard } from "./components/ProjectCard";
-import { ContactForm } from "./components/ContactForm";
 import { ExperienceItem } from "./components/ExperienceItem";
 import { SkillsGrid } from "./components/SkillsGrid";
-import { useTranslation } from "react-i18next";
+import { ContactForm } from "./components/ContactForm";
 
 export default function App() {
   const { t } = useTranslation();
+
+  // Aktive Section ermitteln (wie in Nav)
+  const sectionIds = useMemo(
+    () => ["home", "about", "projects", "experience", "skills", "contact"],
+    []
+  );
+  const activeId = useScrollSpy(sectionIds, {
+    rootMargin: "-35% 0px -55% 0px",
+    threshold: [0, 0.25, 0.5, 0.75, 1],
+  });
+
+  // Dokumenttitel dynamisch setzen
+  useEffect(() => {
+    const map: Record<string, string> = {
+      home: t("nav.home"),
+      about: t("nav.about"),
+      projects: t("nav.projects"),
+      experience: t("nav.experience"),
+      skills: t("nav.skills"),
+      contact: t("nav.contact"),
+    };
+    const base = "Renat Khambazarov — Portfolio";
+    document.title =
+      activeId && map[activeId] ? `${map[activeId]} — ${base}` : base;
+
+    // Optional: Hash in URL pflegen, ohne Scroll-Jump
+    // if (activeId) history.replaceState(null, "", `#${activeId}`);
+  }, [activeId, t]);
 
   return (
     <>
