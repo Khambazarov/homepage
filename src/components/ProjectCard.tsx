@@ -19,12 +19,15 @@ export function ProjectCard({
   const hasLive = Boolean(live);
   const hasRepo = Boolean(repo);
 
+  // WIP-Policy: Live immer disabled anzeigen, Repo bleibt aktiv
+  const showLiveAsLink = hasLive && !isWip;
+
   return (
     <article
       className={[
         "rounded-2xl border p-5 shadow-sm bg-white dark:bg-neutral-900",
-        "transition-[transform,box-shadow] duration-200 ease-out motion-reduce:transition-none",
-        "hover:-translate-y-0.5 hover:shadow-md",
+        "transition-shadow duration-200 ease-out motion-reduce:transition-none",
+        "hover:shadow-md",
         isWip ? "opacity-95" : "",
       ].join(" ")}
       aria-labelledby={`project-${slugify(title)}`}
@@ -37,8 +40,6 @@ export function ProjectCard({
         >
           {title}
         </h3>
-
-        {/* Status-Badge rechtsbündig */}
         <div className="ml-auto">
           <StatusBadge isWip={isWip} />
         </div>
@@ -47,21 +48,30 @@ export function ProjectCard({
       {/* Beschreibung */}
       <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">{desc}</p>
 
-      {/* Tech-Badges (max. 8 sichtbar, Rest zusammengefasst) */}
+      {/* Tech-Badges */}
       <TechBadges items={stack} className="mt-3" maxVisible={8} />
 
       {/* Actions */}
       <div className="mt-4 flex flex-wrap gap-3">
         {/* Live */}
-        {hasLive ? (
+        {showLiveAsLink ? (
           <a
-            className="btn btn-outline"
+            className="btn btn-outline group"
             href={live}
             target="_blank"
-            rel="noreferrer"
-            title="Open live demo"
+            rel="noreferrer noopener"
+            title="Open live demo in new tab"
           >
-            Live
+            <span className="inline-flex items-center gap-1">
+              Live
+              <span
+                aria-hidden="true"
+                className="transition-transform motion-reduce:transform-none group-hover:translate-x-1"
+              >
+                →
+              </span>
+            </span>
+            <span className="sr-only"> (opens in new tab)</span>
           </a>
         ) : (
           <ButtonDisabled
@@ -73,13 +83,22 @@ export function ProjectCard({
         {/* Repo */}
         {hasRepo ? (
           <a
-            className="btn"
+            className="btn btn-outline group"
             href={repo}
             target="_blank"
-            rel="noreferrer"
-            title="Open GitHub repository"
+            rel="noreferrer noopener"
+            title="Open GitHub repository in new tab"
           >
-            GitHub
+            <span className="inline-flex items-center gap-1">
+              GitHub
+              <span
+                aria-hidden="true"
+                className="transition-transform motion-reduce:transform-none group-hover:translate-x-1"
+              >
+                →
+              </span>
+            </span>
+            <span className="sr-only"> (opens in new tab)</span>
           </a>
         ) : (
           <ButtonDisabled
