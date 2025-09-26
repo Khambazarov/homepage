@@ -109,26 +109,30 @@ export default function App() {
           </div>
         </Section>
         <Section id="experience" title={t("nav.experience")}>
-          <div className="grid gap-6">
-            <ExperienceItem
-              role="Tutor / Web & Software Developmer (Part-Time, Remote)"
-              company="DCI — Digital Career Institute"
-              period="2024 — 2025"
-              bullets={[
-                "Guided students through MERN stack projects (JavaScript, React, Node, Express, MongoDB).",
-                "Code reviews, debugging sessions, best practices and accessibility.",
-              ]}
-            />
-            <ExperienceItem
-              role="Full-Stack Developer (Full-Time, Remote)"
-              company="DCI — Digital Career Institute"
-              period="2021 — 2025"
-              bullets={[
-                "Delivered small apps and websites with React, TypeScript and Node.",
-                "Set up CI/CD, hosting, and domain/DNS for clients.",
-              ]}
-            />
-          </div>
+          {(() => {
+            const items = t("experience.items", {
+              returnObjects: true,
+            }) as Array<{
+              role: string;
+              company: string;
+              period: string;
+              bullets?: string[];
+            }>;
+
+            return (
+              <div className="grid gap-6">
+                {items.map((it) => (
+                  <ExperienceItem
+                    key={`${it.role} @ ${it.company}`}
+                    role={it.role}
+                    company={it.company}
+                    period={it.period}
+                    bullets={it.bullets}
+                  />
+                ))}
+              </div>
+            );
+          })()}
         </Section>
 
         <Section id="skills" title={t("nav.skills")}>

@@ -28,6 +28,28 @@ const resources = {
         languagesLine:
           "Sprachen: Englisch (C1, DCI-Zertifikat), Deutsch (C2, Muttersprache), Russisch (C2, Muttersprache), Tscherkessisch (C2, Muttersprache).",
       },
+      experience: {
+        items: [
+          {
+            role: "Tutor / Web & Software Developer",
+            company: "DCI — Digital Career Institute",
+            period: "2024 — heute",
+            bullets: [
+              "Studierende durch MERN-Projekte geführt (React, Node, Express, MongoDB).",
+              "Code-Reviews, Debugging-Sessions, Best Practices & Accessibility.",
+            ],
+          },
+          {
+            role: "Full-Stack Developer (Freelance)",
+            company: "Selbstständig",
+            period: "2022 — heute",
+            bullets: [
+              "Kleine Apps & Websites mit React, TypeScript und Node ausgeliefert.",
+              "CI/CD, Hosting sowie Domain/DNS für Kunden aufgesetzt.",
+            ],
+          },
+        ],
+      },
       footer: { imprint: "Impressum", privacy: "Datenschutz" },
     },
   },
@@ -55,6 +77,28 @@ const resources = {
         cta: "Currently open to exciting projects and opportunities.",
         languagesLine:
           "Languages: English (C1, DCI certificate), German (C2, native), Russian (C2, native), Circassian (C2, native).",
+      },
+      experience: {
+        items: [
+          {
+            role: "Tutor / Web & Software Developer",
+            company: "DCI — Digital Career Institute",
+            period: "2024 — present",
+            bullets: [
+              "Guided students through MERN stack projects (React, Node, Express, MongoDB).",
+              "Code reviews, debugging sessions, best practices, and accessibility.",
+            ],
+          },
+          {
+            role: "Full-Stack Developer (Freelance)",
+            company: "Self-employed",
+            period: "2022 — present",
+            bullets: [
+              "Delivered small apps and websites with React, TypeScript and Node.",
+              "Set up CI/CD, hosting, and domain/DNS for clients.",
+            ],
+          },
+        ],
       },
       footer: { imprint: "Imprint", privacy: "Privacy" },
     },
