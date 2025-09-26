@@ -179,28 +179,54 @@ export default function App() {
 
       <footer className="mt-16 border-t">
         <div className="container-max py-8 text-sm text-gray-500 dark:text-gray-400">
-          <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6 w-full">
             <span>© {new Date().getFullYear()} Khambazarov</span>
 
-            <nav aria-label="Legal" className="flex items-center gap-4">
-              <a
-                className="hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 dark:focus:ring-gray-600 rounded-md px-1"
-                href="/impressum.html"
-              >
-                {t("footer.imprint")}
-              </a>
-              <a
-                className="hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 dark:focus:ring-gray-600 rounded-md px-1"
-                href="/privacy.html"
-              >
-                {t("footer.privacy")}
-              </a>
-            </nav>
-
+            {/* Legal + Social as icon buttons */}
             <div
               className="md:ml-auto flex items-center gap-2"
-              aria-label="Social links"
+              aria-label="Links"
             >
+              {/* Impressum */}
+              <a
+                href="/impressum.html"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-xl border hover:bg-gray-50 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 dark:focus:ring-gray-600 transition"
+                aria-label="Impressum"
+                title="Impressum"
+              >
+                {/* document icon */}
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6zM14 3.5 18.5 8H14V3.5zM8 11h8v1.5H8V11zm0 4h8v1.5H8V15z" />
+                </svg>
+                <span className="sr-only">Impressum</span>
+              </a>
+
+              {/* Datenschutz */}
+              <a
+                href="/privacy.html"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-xl border hover:bg-gray-50 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 dark:focus:ring-gray-600 transition"
+                aria-label="Datenschutz"
+                title="Datenschutz"
+              >
+                {/* shield icon */}
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path d="M12 2 4 5v6c0 5 3.4 9.7 8 11 4.6-1.3 8-6 8-11V5l-8-3zm0 2.1 6 2.2v4.7c0 4-2.7 8-6 9.2-3.3-1.2-6-5.2-6-9.2V6.3l6-2.2zM11 7h2v5h-2V7zm0 6h2v2h-2v-2z" />
+                </svg>
+                <span className="sr-only">Datenschutz</span>
+              </a>
+
               {/* GitHub */}
               <a
                 href="https://github.com/Khambazarov/"
@@ -217,7 +243,7 @@ export default function App() {
                   fill="currentColor"
                   aria-hidden="true"
                 >
-                  <path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.19-3.37-1.19-.45-1.15-1.11-1.46-1.11-1.46-.91-.62.07-.6.07-.6 1 .07 1.53 1.04 1.53 1.04 .9 1.53 2.36 1.09 2.93.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.93 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.6 9.6 0 0 1 12 6.8c.85 0 1.7.12 2.5.34 1.9-1.29 2.74-1.02 2.74-1.02 .55 1.37.21 2.39.1 2.64.64.7 1.03 1.6 1.03 2.68 0 3.83-2.34 4.67-4.57 4.92.36.31.68.92.68 1.86v2.76c0 .27.18.58.69.48A10 10 0 0 0 12 2z" />
+                  <path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.19-3.37-1.19-.45-1.15-1.11-1.46-1.11-1.46-.91-.62.07-.6.07-.6 1 .07 1.53 1.04 1.53 1.04.9 1.53 2.36 1.09 2.93.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.93 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.6 9.6 0 0 1 12 6.8c.85 0 1.7.12 2.5.34 1.9-1.29 2.74-1.02 2.74-1.02 .55 1.37.21 2.39.1 2.64.64.7 1.03 1.6 1.03 2.68 0 3.83-2.34 4.67-4.57 4.92.36.31.68.92.68 1.86v2.76c0 .27.18.58.69.48A10 10 0 0 0 12 2z" />
                 </svg>
                 <span className="sr-only">GitHub</span>
               </a>
