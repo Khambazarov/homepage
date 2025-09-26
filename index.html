@@ -7,15 +7,33 @@
       content="width=device-width, initial-scale=1.0, viewport-fit=cover"
     />
 
-    <!-- Primary Meta -->
+    <!-- ================= Primary ================= -->
     <title>Renat Khambazarov — Portfolio</title>
     <meta
       name="description"
       content="Web & Software Developer (MERN). Modern UIs, accessible UX, and scalable services."
     />
+    <!-- TODO: Bei Umzug auf eigene Subdomain hier anpassen -->
     <link rel="canonical" href="https://portfolio-khambazarov.netlify.app/" />
 
-    <!-- Open Graph -->
+    <!-- Hreflang (DE/EN). Beide zeigen auf Root, da i18n clientseitig -->
+    <link
+      rel="alternate"
+      hreflang="de"
+      href="https://portfolio-khambazarov.netlify.app/"
+    />
+    <link
+      rel="alternate"
+      hreflang="en"
+      href="https://portfolio-khambazarov.netlify.app/"
+    />
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href="https://portfolio-khambazarov.netlify.app/"
+    />
+
+    <!-- ================= Open Graph / Twitter ================= -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="portfolio-khambazarov.netlify.app" />
     <meta property="og:title" content="Renat Khambazarov — Portfolio" />
@@ -27,30 +45,40 @@
       property="og:url"
       content="https://portfolio-khambazarov.netlify.app/"
     />
+    <!-- TODO: Bei Umzug auf eigene Subdomain hier anpassen -->
     <meta
       property="og:image"
       content="https://portfolio-khambazarov.netlify.app/og.png"
     />
+    <meta name="twitter:card" content="summary_large_image" />
 
-    <!-- Icons (modern + Fallbacks) -->
+    <!-- ================= Icons / PWA ================= -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" sizes="32x32" href="/favicon.ico" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#0b0b0d" />
 
-    <!-- Performance: Preconnects -->
+    <!-- ================= Performance ================= -->
     <link
       rel="preconnect"
       href="https://challenges.cloudflare.com"
       crossorigin
     />
     <link rel="preconnect" href="https://formspree.io" crossorigin />
+    <!-- Kleiner Preview-Boost für Link-Sharing (falls og.png lokal geladen wird) -->
+    <link
+      rel="preload"
+      as="image"
+      href="/og.png"
+      imagesrcset="/og.png 1200w"
+      imagesizes="100vw"
+    />
 
-    <!-- Security/BP -->
+    <!-- ================= Security / Best Practices ================= -->
     <meta name="referrer" content="strict-origin-when-cross-origin" />
 
-    <!-- Theme bootstrap (persisted -> system -> dark) -->
+    <!-- ================= Theme-Bootstrap (persisted -> system -> dark) ================= -->
     <script>
       (function () {
         try {
@@ -65,7 +93,80 @@
       })();
     </script>
 
-    <!-- Cloudflare Turnstile (explicit render to avoid auto/double rendering) -->
+    <!-- ================= JSON-LD (SEO) ================= -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Renat Khambazarov",
+        "url": "https://portfolio-khambazarov.netlify.app/",
+        "jobTitle": "Web & Software Developer",
+        "sameAs": [
+          "https://github.com/Khambazarov",
+          "https://www.linkedin.com/in/khambazarov/"
+        ]
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Renat Khambazarov — Portfolio",
+        "url": "https://portfolio-khambazarov.netlify.app/",
+        "inLanguage": ["de", "en"],
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://www.google.com/search?q=site:portfolio-khambazarov.netlify.app+{search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "ItemList",
+        "itemListElement": [
+          {
+            "@type": "SiteNavigationElement",
+            "position": 1,
+            "name": "Home",
+            "url": "https://portfolio-khambazarov.netlify.app/#home"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 2,
+            "name": "About",
+            "url": "https://portfolio-khambazarov.netlify.app/#about"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 3,
+            "name": "Projects",
+            "url": "https://portfolio-khambazarov.netlify.app/#projects"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 4,
+            "name": "Experience",
+            "url": "https://portfolio-khambazarov.netlify.app/#experience"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 5,
+            "name": "Skills",
+            "url": "https://portfolio-khambazarov.netlify.app/#skills"
+          },
+          {
+            "@type": "SiteNavigationElement",
+            "position": 6,
+            "name": "Contact",
+            "url": "https://portfolio-khambazarov.netlify.app/#contact"
+          }
+        ]
+      }
+    </script>
+
+    <!-- ================= Cloudflare Turnstile (explicit render) ================= -->
     <script
       src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit"
       async
@@ -74,7 +175,7 @@
   </head>
 
   <body>
-    <!-- No-JS Hinweis für das Kontaktformular (optional) -->
+    <!-- No-JS Hinweis für das Kontaktformular -->
     <noscript>
       <style>
         .cf-turnstile {
