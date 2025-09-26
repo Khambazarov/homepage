@@ -179,40 +179,89 @@ export default function App() {
 
       <footer className="mt-16 border-t">
         <div className="container-max py-8 text-sm text-gray-500 dark:text-gray-400">
-          <div className="flex flex-col md:flex-row items-start md:items-center gap-2 md:gap-6">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6">
             <span>© {new Date().getFullYear()} Khambazarov</span>
-            <a href="/impressum.html">{t("footer.imprint")}</a>
-            <a href="/privacy.html">{t("footer.privacy")}</a>
-            <a
-              href="https://github.com/Khambazarov/"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="GitHub"
-              title="GitHub"
-              className="sr-only md:not-sr-only"
+
+            <nav aria-label="Legal" className="flex items-center gap-4">
+              <a
+                className="hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 dark:focus:ring-gray-600 rounded-md px-1"
+                href="/impressum.html"
+              >
+                {t("footer.imprint")}
+              </a>
+              <a
+                className="hover:underline focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 dark:focus:ring-gray-600 rounded-md px-1"
+                href="/privacy.html"
+              >
+                {t("footer.privacy")}
+              </a>
+            </nav>
+
+            <div
+              className="md:ml-auto flex items-center gap-2"
+              aria-label="Social links"
             >
-              GitHub
-            </a>
-            <a
-              href="https://www.linkedin.com/in/khambazarov/"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="LinkedIn"
-              title="LinkedIn"
-              className="sr-only md:not-sr-only"
-            >
-              LinkedIn
-            </a>
-            <a
-              href="mailto:contact@khambazarov.dev"
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Email"
-              className="sr-only md:not-sr-only"
-              title="Email"
-            >
-              Email
-            </a>
+              {/* GitHub */}
+              <a
+                href="https://github.com/Khambazarov/"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-xl border hover:bg-gray-50 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-400 dark:focus:ring-gray-600 transition"
+                aria-label="GitHub"
+                title="GitHub"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.19-3.37-1.19-.45-1.15-1.11-1.46-1.11-1.46-.91-.62.07-.6.07-.6 1 .07 1.53 1.04 1.53 1.04 .9 1.53 2.36 1.09 2.93.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.93 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.6 9.6 0 0 1 12 6.8c.85 0 1.7.12 2.5.34 1.9-1.29 2.74-1.02 2.74-1.02 .55 1.37.21 2.39.1 2.64.64.7 1.03 1.6 1.03 2.68 0 3.83-2.34 4.67-4.57 4.92.36.31.68.92.68 1.86v2.76c0 .27.18.58.69.48A10 10 0 0 0 12 2z" />
+                </svg>
+                <span className="sr-only">GitHub</span>
+              </a>
+
+              {/* LinkedIn */}
+              <a
+                href="https://www.linkedin.com/in/khambazarov/"
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-xl border hover:bg-gray-50 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400 dark:focus:ring-blue-600 transition"
+                aria-label="LinkedIn"
+                title="LinkedIn"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8.5h4V23h-4V8.5zM8 8.5h3.8v2h.05c.53-1 1.84-2.05 3.78-2.05 4.04 0 4.79 2.66 4.79 6.12V23h-4v-5.9c0-1.41-.02-3.23-1.97-3.23-1.98 0-2.28 1.54-2.28 3.13V23H8V8.5z" />
+                </svg>
+                <span className="sr-only">LinkedIn</span>
+              </a>
+
+              {/* E-Mail */}
+              <a
+                href="mailto:contact@khambazarov.dev"
+                className="inline-flex h-9 w-9 items-center justify-center rounded-xl border hover:bg-gray-50 dark:hover:bg-neutral-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-400 dark:focus:ring-emerald-600 transition"
+                aria-label="Email"
+                title="Email"
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                  aria-hidden="true"
+                >
+                  <path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5L4 8V6l8 5 8-5v2z" />
+                </svg>
+                <span className="sr-only">Email</span>
+              </a>
+            </div>
           </div>
         </div>
       </footer>
