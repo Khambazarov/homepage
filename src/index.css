@@ -1,65 +1,66 @@
 @import "tailwindcss";
 
 /* Smooth scrolling for anchor navigation */
-html {
-  scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
-/* --- Base: Theme + accessible focus rings --- */
+/* --- Base: Theme + globaler, einheitlicher Focus-Ring (dein Pattern bleibt) --- */
 @layer base {
   body {
     @apply bg-white text-gray-900 dark:bg-neutral-900 dark:text-gray-100;
   }
 
-  /* Sichtbarer Tastaturfokus (WCAG 2.4.7), sauber mit Theme-Offset */
+  /* Sichtbarer Tastatur-Fokus, passend zu Light/Dark */
   :where(a, button, [role="button"], input, select, textarea):focus-visible {
     @apply outline-none ring-2 ring-offset-2 ring-gray-900 dark:ring-gray-100
            ring-offset-white dark:ring-offset-neutral-900 rounded-md;
   }
 
-  /* Dezentere Link-Transitions */
-  a {
-    @apply transition-colors duration-150;
-  }
-  a:hover {
-    @apply text-gray-900 dark:text-gray-50;
-  }
+  a { @apply transition-colors duration-150; }
+  a:hover { @apply text-gray-900 dark:text-gray-50; }
 }
 
-/* --- Components: deine Klassen + kleine Upgrades --- */
+/* --- Components --- */
 @layer components {
-  /* Beibehaltener Container von dir */
-  .container-max {
-    @apply mx-auto max-w-screen-xl px-4;
-  }
+  .container-max { @apply mx-auto max-w-screen-xl px-4; }
 
-  /* Primärbutton – wie bei dir, plus Theme-Farben und Disabled-State */
+  /* NEUTRALER Button (border-only). Keine Farben erzwingen -> kein Dark/Light-Konflikt */
   .btn {
     @apply inline-flex items-center justify-center rounded-2xl px-4 py-2
-           font-medium border shadow-sm transition hover:shadow
-           bg-gray-900 text-white dark:bg-white dark:text-gray-900;
-  }
-  .btn:disabled,
-  .btn[aria-disabled="true"] {
-    @apply opacity-60 cursor-not-allowed;
+           font-medium border shadow-sm transition hover:shadow;
   }
 
-  /* Inputs – wie bei dir, plus Theme-Farben & Placeholder-Kontrast */
+  /* Variante: Primär (gefüllt). Nur nutzen, wenn du bewusst einen Filled-Button willst. */
+  .btn-primary {
+    @apply bg-gray-900 text-white dark:bg-white dark:text-gray-900;
+  }
+
+  /* Variante: Umriss betonen (optional) */
+  .btn-outline {
+    @apply border-gray-900 text-gray-900 dark:border-gray-200 dark:text-gray-200;
+  }
+
+  /* Disabled-Pattern (funktioniert mit disabled und aria-disabled) */
+  .btn[disabled],
+  .btn[aria-disabled="true"] {
+    @apply opacity-60 cursor-not-allowed hover:shadow-none;
+  }
+
+  /* Inputs – neutrales Theme, klare Placeholder, Fokus via base */
   .input {
     @apply w-full rounded-2xl border px-3 py-2 shadow-sm
-           focus:outline-none focus:ring
            bg-white dark:bg-neutral-900
            text-gray-900 dark:text-gray-100
-           placeholder:text-gray-400 dark:placeholder:text-gray-500;
+           placeholder:text-gray-400 dark:placeholder:text-gray-500
+           focus:outline-none;
+  }
+
+  /* Links mit sichtbarem Fokus (nutze optional zusätzlich zur <a>-Basis) */
+  .link {
+    @apply underline-offset-2 hover:underline rounded-md;
   }
 }
 
 /* --- Respect reduced motion --- */
 @media (prefers-reduced-motion: reduce) {
-  * {
-    -webkit-animation: none !important;
-    animation: none !important;
-    -webkit-transition: none !important;
-    transition: none !important;
-  }
+  * { animation: none !important; transition: none !important; }
 }
