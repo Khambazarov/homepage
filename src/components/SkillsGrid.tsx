@@ -1,34 +1,25 @@
-type Category = {
-  name: string;
-  items: string[];
-};
-
-type Props = {
-  categories: Category[];
-};
-
-export function SkillsGrid({ categories }: Props) {
+type Category = { name: string; items: string[] };
+export function SkillsGrid({ categories }: { categories: Category[] }) {
   return (
-    <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {categories.map((c) => (
+    <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {categories.map((cat) => (
         <section
-          key={c.name}
-          className="rounded-2xl border p-4 shadow-sm bg-white dark:bg-neutral-900"
-          aria-labelledby={`skills-${slugify(c.name)}`}
+          key={cat.name}
+          className="rounded-2xl border p-5 shadow-sm bg-white dark:bg-neutral-900"
+          aria-labelledby={`skill-${slugify(cat.name)}`}
         >
           <h3
-            id={`skills-${slugify(c.name)}`}
-            className="mb-2 text-sm font-semibold text-gray-800 dark:text-gray-100 tracking-wide"
+            id={`skill-${slugify(cat.name)}`}
+            className="text-base font-semibold text-gray-900 dark:text-gray-100"
           >
-            {c.name}
+            {cat.name}
           </h3>
-          <ul className="flex flex-wrap gap-2">
-            {c.items.map((it) => (
-              <li
-                key={it}
-                className="rounded-md border px-2 py-0.5 text-xs text-gray-700 dark:text-gray-200"
-              >
-                {it}
+          <ul className="mt-3 flex flex-wrap gap-2">
+            {cat.items.map((it) => (
+              <li key={it}>
+                <span className="inline-flex items-center rounded-md border px-2 py-0.5 text-xs text-gray-700 dark:text-gray-200">
+                  {it}
+                </span>
               </li>
             ))}
           </ul>

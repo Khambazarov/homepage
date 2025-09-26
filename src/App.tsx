@@ -136,42 +136,15 @@ export default function App() {
         </Section>
 
         <Section id="skills" title={t("nav.skills")}>
-          <SkillsGrid
-            categories={[
-              {
-                name: "Frontend",
-                items: [
-                  "React",
-                  "JavaScript",
-                  "TypeScript",
-                  "Tailwind CSS",
-                  "Vite",
-                ],
-              },
-              {
-                name: "Backend",
-                items: ["Node.js", "Express", "REST APIs", "Socket.io"],
-              },
-              {
-                name: "Data & Infra",
-                items: ["MongoDB", "Mongoose", "Linux", "Git/GitHub", "CI/CD"],
-              },
-              {
-                name: "Serverless",
-                items: ["Vercel", "Netlify", "Render", "DigitalOcean"],
-              },
-              {
-                name: "Languages",
-                items: [
-                  "English — C1 (DCI certificate)",
-                  "German — native (C2)",
-                  "Russian — native (C2)",
-                  "Circassian — native (C2)",
-                ],
-              },
-            ]}
-          />
-        </Section>
+  {(() => {
+    const categories = t("skills.categories", { returnObjects: true }) as Array<{
+      name: string;
+      items: string[];
+    }>;
+    return <SkillsGrid categories={categories} />;
+  })()}
+</Section>
+
 
         <Section id="contact" title={t("nav.contact")}>
           <ContactForm />

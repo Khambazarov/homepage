@@ -50,6 +50,36 @@ const resources = {
           },
         ],
       },
+      skills: {
+        categories: [
+          {
+            name: "Frontend",
+            items: [
+              "React",
+              "TypeScript",
+              "JavaScript",
+              "Tailwind CSS",
+              "Vite",
+            ],
+          },
+          {
+            name: "Backend",
+            items: ["Node.js", "Express", "REST APIs", "Socket.io"],
+          },
+          {
+            name: "Data & Infra",
+            items: ["MongoDB", "Mongoose", "Linux", "Git/GitHub", "CI/CD"],
+          },
+          {
+            name: "Serverless/Hosting",
+            items: ["Netlify", "Vercel", "Heroku", "Render", "DigitalOcean"],
+          },
+          {
+            name: "Soft Skills",
+            items: ["Code Reviews", "Mentoring", "A11y/UX", "Agile"],
+          },
+        ],
+      },
       footer: { imprint: "Impressum", privacy: "Datenschutz" },
     },
   },
@@ -100,6 +130,36 @@ const resources = {
           },
         ],
       },
+      skills: {
+        categories: [
+          {
+            name: "Frontend",
+            items: [
+              "React",
+              "TypeScript",
+              "JavaScript",
+              "Tailwind CSS",
+              "Vite",
+            ],
+          },
+          {
+            name: "Backend",
+            items: ["Node.js", "Express", "REST APIs", "Socket.io"],
+          },
+          {
+            name: "Data & Infra",
+            items: ["MongoDB", "Mongoose", "Linux", "Git/GitHub", "CI/CD"],
+          },
+          {
+            name: "Serverless/Hosting",
+            items: ["Netlify", "Vercel", "Heroku", "Render", "DigitalOcean"],
+          },
+          {
+            name: "Soft skills",
+            items: ["Code reviews", "Mentoring", "A11y/UX", "Agile"],
+          },
+        ],
+      },
       footer: { imprint: "Imprint", privacy: "Privacy" },
     },
   },
@@ -113,7 +173,7 @@ i18n
     fallbackLng: "en",
     defaultNS: "common",
     supportedLngs: ["de", "en"],
-    nonExplicitSupportedLngs: true, // mappt z.B. de-DE → de
+    nonExplicitSupportedLngs: true,
     detection: {
       order: ["localStorage", "navigator", "htmlTag"],
       caches: ["localStorage"],
@@ -121,7 +181,6 @@ i18n
     interpolation: { escapeValue: false },
   });
 
-// <html lang="...">
 document.documentElement.setAttribute("lang", i18n.resolvedLanguage || "en");
 i18n.on("languageChanged", (lng) => {
   document.documentElement.setAttribute("lang", lng || "en");
