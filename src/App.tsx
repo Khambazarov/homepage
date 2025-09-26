@@ -75,6 +75,9 @@ export default function App() {
           <p className="mt-2 text-gray-700 dark:text-gray-300 max-w-prose">
             {t("about.cta")}
           </p>
+          <p className="mt-2 text-gray-700 dark:text-gray-300 max-w-prose">
+            {t("about.languagesLine")}
+          </p>
         </Section>
 
         <Section id="projects" title={t("nav.projects")}>
@@ -136,15 +139,16 @@ export default function App() {
         </Section>
 
         <Section id="skills" title={t("nav.skills")}>
-  {(() => {
-    const categories = t("skills.categories", { returnObjects: true }) as Array<{
-      name: string;
-      items: string[];
-    }>;
-    return <SkillsGrid categories={categories} />;
-  })()}
-</Section>
-
+          {(() => {
+            const categories = t("skills.categories", {
+              returnObjects: true,
+            }) as Array<{
+              name: string;
+              items: string[];
+            }>;
+            return <SkillsGrid categories={categories} />;
+          })()}
+        </Section>
 
         <Section id="contact" title={t("nav.contact")}>
           <ContactForm />

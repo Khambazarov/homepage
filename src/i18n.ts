@@ -78,6 +78,15 @@ const resources = {
             name: "Soft Skills",
             items: ["Code Reviews", "Mentoring", "A11y/UX", "Agile"],
           },
+          {
+            name: "Sprachen",
+            items: [
+              "Englisch — C1 (DCI-Zertifikat)",
+              "Deutsch — C2 (Muttersprache)",
+              "Russisch — C2 (Muttersprache)",
+              "Tscherkessisch — C2 (Muttersprache)",
+            ],
+          },
         ],
       },
       footer: { imprint: "Impressum", privacy: "Datenschutz" },
@@ -157,6 +166,15 @@ const resources = {
           {
             name: "Soft skills",
             items: ["Code reviews", "Mentoring", "A11y/UX", "Agile"],
+          },
+          {
+            name: "Languages",
+            items: [
+              "English — C1 (DCI certificate)",
+              "German — C2 (native)",
+              "Russian — C2 (native)",
+              "Circassian — C2 (native)",
+            ],
           },
         ],
       },
