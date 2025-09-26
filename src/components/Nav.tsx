@@ -108,7 +108,10 @@ export function Nav() {
         {/* Actions: Language + Theme + Mobile CTA */}
         <div className="flex items-center gap-2">
           {/* Language toggle (Desktop) */}
-          <div className="hidden md:flex items-center gap-1" aria-label="Language">
+          <div
+            className="hidden md:flex items-center gap-1"
+            aria-label="Language"
+          >
             <button
               type="button"
               onClick={() => setLang("de")}
@@ -143,7 +146,7 @@ export function Nav() {
           <button
             type="button"
             onClick={toggleTheme}
-            className="btn px-3 py-1.5 text-sm"
+            className="btn btn-outline px-3 py-1.5 text-sm"
             aria-label="Toggle dark / light"
             title="Toggle dark / light"
           >
@@ -151,7 +154,10 @@ export function Nav() {
           </button>
 
           {/* Mobile CTA */}
-          <a href="#contact" className="btn text-sm px-3 py-1.5 md:hidden">
+          <a
+            href="#contact"
+            className="btn btn-primary text-sm px-3 py-1.5 md:hidden"
+          >
             {t("nav.contact")}
           </a>
         </div>

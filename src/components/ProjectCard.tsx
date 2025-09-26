@@ -55,7 +55,7 @@ export function ProjectCard({
         {/* Live */}
         {hasLive ? (
           <a
-            className="btn border-gray-900 dark:border-gray-200"
+            className="btn btn-outline"
             href={live}
             target="_blank"
             rel="noreferrer"

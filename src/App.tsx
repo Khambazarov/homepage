@@ -59,13 +59,10 @@ export default function App() {
             {t("hero.subtitle")}
           </p>
           <div className="mt-6 flex gap-3">
-            <a
-              href="#projects"
-              className="btn border-gray-900 dark:border-gray-200"
-            >
+            <a href="#projects" className="btn btn-outline">
               {t("hero.ctaProjects")}
             </a>
-            <a href="#contact" className="btn">
+            <a href="#contact" className="btn btn-primary">
               {t("hero.ctaContact")}
             </a>
           </div>
