@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from "react";
+import { Alert } from "./Alert";
 
 type State = "idle" | "loading" | "ok" | "err";
 
 const FORMSPREE_ID = import.meta.env.VITE_FORMSPREE_ID;
 const TURNSTILE_SITEKEY = import.meta.env.VITE_TURNSTILE_SITEKEY;
 
-// Cloudflare Turnstile global (über <script> in index.html)
 declare global {
   interface Window {
     turnstile?: {
-      render: (el: HTMLElement, opts: Record<string, unknown>) => string; // gibt Widget-ID zurück
+      render: (el: HTMLElement, opts: Record<string, unknown>) => string;
       reset: (widgetId?: string) => void;
     };
   }
@@ -18,40 +18,34 @@ declare global {
 export function ContactForm() {
   const [state, setState] = useState<State>("idle");
   const [token, setToken] = useState<string | null>(null);
+  const [showToast, setShowToast] = useState<null | "ok" | "err">(null);
 
-  // Stabiler Wrapper; wir mounten das eigentliche Widget dynamisch darin
-  const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const widgetRef = useRef<HTMLDivElement | null>(null);
   const widgetIdRef = useRef<string | null>(null);
+  const dismissTimer = useRef<number | null>(null);
 
+  // Turnstile mounten & bei Theme-Wechsel neu rendern
   useEffect(() => {
     const root = document.documentElement;
 
     function renderWidget() {
-      if (!wrapperRef.current || !window.turnstile) return;
+      if (!widgetRef.current || !window.turnstile) return;
 
-      // Guard: ENV muss ein String sein
       if (typeof TURNSTILE_SITEKEY !== "string" || !TURNSTILE_SITEKEY) {
         console.error("[Turnstile] Missing/invalid VITE_TURNSTILE_SITEKEY");
         return;
       }
 
-      // Altes Widget zurücksetzen (best effort)
       try {
         if (widgetIdRef.current) window.turnstile.reset(widgetIdRef.current);
-      } catch {
-        /* noop */
-      }
-
-      // Frischen Mount-Node verwenden, um Doppel-Render zu vermeiden
-      wrapperRef.current.innerHTML = "";
-      const mount = document.createElement("div");
-      wrapperRef.current.appendChild(mount);
+      } catch {}
 
       const theme =
         root.getAttribute("data-theme") === "dark" ? "dark" : "light";
 
-      // Turnstile-Render & Widget-ID merken
-      const id = window.turnstile.render(mount, {
+      widgetRef.current.innerHTML = "";
+
+      const id = window.turnstile.render(widgetRef.current, {
         sitekey: TURNSTILE_SITEKEY,
         theme,
         appearance: "always",
@@ -64,23 +58,23 @@ export function ContactForm() {
     }
 
     renderWidget();
-
-    // Bei Theme-Änderung Widget neu mounten
-    const observer = new MutationObserver(renderWidget);
+    const observer = new MutationObserver(() => renderWidget());
     observer.observe(root, {
       attributes: true,
       attributeFilter: ["data-theme", "class"],
     });
-
-    return () => {
-      observer.disconnect();
-      try {
-        if (widgetIdRef.current) window.turnstile?.reset(widgetIdRef.current);
-      } catch {
-        /* noop */
-      }
-    };
+    return () => observer.disconnect();
   }, []);
+
+  // Auto-dismiss für Toasts
+  useEffect(() => {
+    if (!showToast) return;
+    if (dismissTimer.current) window.clearTimeout(dismissTimer.current);
+    dismissTimer.current = window.setTimeout(() => setShowToast(null), 4000);
+    return () => {
+      if (dismissTimer.current) window.clearTimeout(dismissTimer.current);
+    };
+  }, [showToast]);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -92,21 +86,20 @@ export function ContactForm() {
     // Honeypot
     if (data.get("_gotcha")) {
       setState("ok");
+      setShowToast("ok");
       form.reset();
       return;
     }
 
-    // Captcha-Token erforderlich
     if (!token) {
       setState("err");
-      // Fokus ans Widget (falls möglich)
-      wrapperRef.current?.querySelector("iframe")?.focus?.();
+      setShowToast("err");
+      widgetRef.current?.querySelector("iframe")?.focus?.();
       return;
     }
     data.append("cf-turnstile-response", token);
 
     const endpoint = `https://formspree.io/f/${FORMSPREE_ID}`;
-
     try {
       const res = await fetch(endpoint, {
         method: "POST",
@@ -114,25 +107,38 @@ export function ContactForm() {
         body: data,
       });
 
-      setState(res.ok ? "ok" : "err");
-
       if (res.ok) {
+        setState("ok");
+        setShowToast("ok");
         form.reset();
         setToken(null);
-        // Neues Token für nächsten Submit
         try {
           if (widgetIdRef.current) window.turnstile?.reset(widgetIdRef.current);
-        } catch {
-          /* noop */
-        }
+        } catch {}
+      } else {
+        setState("err");
+        setShowToast("err");
       }
     } catch {
       setState("err");
+      setShowToast("err");
     }
   }
 
   return (
     <form onSubmit={onSubmit} className="grid gap-4 max-w-lg" noValidate>
+      {/* Toast/Alert oben */}
+      {showToast === "ok" && (
+        <Alert kind="success" onClose={() => setShowToast(null)}>
+          Thanks! I’ll get back to you soon.
+        </Alert>
+      )}
+      {showToast === "err" && (
+        <Alert kind="error" onClose={() => setShowToast(null)}>
+          Sending failed. Please check the captcha and try again.
+        </Alert>
+      )}
+
       {/* Firma */}
       <label className="grid gap-1">
         <span className="text-sm">Firma (optional)</span>
@@ -197,9 +203,9 @@ export function ContactForm() {
         aria-hidden="true"
       />
 
-      {/* Turnstile-Wrapper */}
+      {/* Turnstile-Widget */}
       <div className="mt-2" aria-live="polite" aria-busy={state === "loading"}>
-        <div ref={wrapperRef} />
+        <div ref={widgetRef} className="cf-turnstile" />
         <p className="sr-only">
           This form is protected by Cloudflare Turnstile to prevent spam.
         </p>
@@ -207,32 +213,18 @@ export function ContactForm() {
 
       <div className="flex items-center gap-3">
         <button
-          className="btn"
+          className="btn btn-primary"
           type="submit"
-          disabled={state === "loading" || !token}
+          disabled={state === "loading"}
           aria-busy={state === "loading"}
         >
           {state === "loading" ? "Sending…" : "Send"}
         </button>
 
-        {state === "ok" && (
-          <span className="text-sm text-green-600">
-            Thanks! I’ll get back to you soon.
-          </span>
-        )}
-        {state === "err" && (
-          <span className="text-sm text-red-600">
-            Sending failed. Please check the captcha and try again.
-          </span>
-        )}
-      </div>
-
-      <p className="text-sm text-gray-600 dark:text-gray-400">
-        Prefer email?{" "}
-        <a className="underline" href="mailto:contact@khambazarov.dev">
-          contact@khambazarov.dev
+        <a className="link" href="mailto:contact@khambazarov.dev">
+          Prefer email? contact@khambazarov.dev
         </a>
-      </p>
+      </div>
     </form>
   );
 }
