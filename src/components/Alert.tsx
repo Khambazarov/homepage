@@ -23,7 +23,12 @@ export function Alert({ kind, children, onClose }: AlertProps) {
       ].join(" ")}
     >
       <div className="flex items-start gap-3">
-        <span aria-hidden="true">ℹ️</span>
+        <span aria-hidden="true">
+          {/* ℹ️ */}
+          {kind === "success" ? "✅" : kind === "error" ? "❌" : "ℹ️"}
+          {/* {kind === "success" ? "✔️" : kind === "error" ? "❌" : "ℹ️"} */}
+          {/* {kind === "success" ? "✔️" : kind === "error" ? "⚠️" : "ℹ️"} */}
+        </span>
         <div className="text-sm leading-relaxed">{children}</div>
         {onClose && (
           <button
