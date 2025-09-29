@@ -20,15 +20,52 @@ export function ContactForm() {
   const [token, setToken] = useState<string | null>(null);
   const [showToast, setShowToast] = useState<null | "ok" | "err">(null);
 
+  // Lazy/Viewport
+  const formRef = useRef<HTMLFormElement | null>(null);
+  const [isInView, setIsInView] = useState(false);
+
+  // Turnstile
   const widgetRef = useRef<HTMLDivElement | null>(null);
   const widgetIdRef = useRef<string | null>(null);
-  const dismissTimer = useRef<number | null>(null);
+  const hasRenderedRef = useRef(false);
 
-  // Turnstile mounten & bei Theme-Wechsel neu rendern
+  // Auto-dismiss für Toasts
   useEffect(() => {
+    if (!showToast) return;
+    const t = window.setTimeout(() => setShowToast(null), 4000);
+    return () => window.clearTimeout(t);
+  }, [showToast]);
+
+  // 1) Viewport-Observer: erst wenn Formular sichtbar ist, initialisieren
+  useEffect(() => {
+    if (!formRef.current) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            setIsInView(true);
+            io.disconnect();
+            break;
+          }
+        }
+      },
+      { root: null, threshold: 0.15 }
+    );
+    io.observe(formRef.current);
+    return () => io.disconnect();
+  }, []);
+
+  // 2) Turnstile rendern (einmalig), danach auf Theme-Wechsel reagieren
+  useEffect(() => {
+    if (!isInView) return;
+    if (hasRenderedRef.current) return;
+
+    let themeObserver: MutationObserver | null = null;
+    let poller: number | null = null;
+
     const root = document.documentElement;
 
-    function renderWidget() {
+    const renderWidget = () => {
       if (!widgetRef.current || !window.turnstile) return;
 
       if (typeof TURNSTILE_SITEKEY !== "string" || !TURNSTILE_SITEKEY) {
@@ -36,14 +73,11 @@ export function ContactForm() {
         return;
       }
 
-      try {
-        if (widgetIdRef.current) window.turnstile.reset(widgetIdRef.current);
-      } catch {}
+      // Clean mount
+      widgetRef.current.innerHTML = "";
 
       const theme =
         root.getAttribute("data-theme") === "dark" ? "dark" : "light";
-
-      widgetRef.current.innerHTML = "";
 
       const id = window.turnstile.render(widgetRef.current, {
         sitekey: TURNSTILE_SITEKEY,
@@ -55,26 +89,50 @@ export function ContactForm() {
       });
 
       widgetIdRef.current = id || null;
+      hasRenderedRef.current = true;
+
+      // Theme-Änderungen beobachten und Widget neu rendern
+      themeObserver = new MutationObserver(() => {
+        // reset + rerender
+        try {
+          if (widgetIdRef.current) window.turnstile?.reset(widgetIdRef.current);
+        } catch {
+          // ignore
+        }
+        hasRenderedRef.current = false; // erlauben, erneut zu rendern
+        renderWidget();
+      });
+      themeObserver.observe(root, {
+        attributes: true,
+        attributeFilter: ["data-theme", "class"],
+      });
+    };
+
+    // Warten bis Turnstile-Script geladen ist (polling bis 5s)
+    const startedAt = Date.now();
+    const tryRender = () => {
+      if (window.turnstile && widgetRef.current) {
+        renderWidget();
+        if (poller) window.clearInterval(poller);
+        poller = null;
+        return;
+      }
+      if (Date.now() - startedAt > 5000) {
+        if (poller) window.clearInterval(poller);
+        poller = null;
+        console.warn("[Turnstile] Script not ready after 5s.");
+      }
+    };
+    tryRender();
+    if (!hasRenderedRef.current && !poller) {
+      poller = window.setInterval(tryRender, 150);
     }
 
-    renderWidget();
-    const observer = new MutationObserver(() => renderWidget());
-    observer.observe(root, {
-      attributes: true,
-      attributeFilter: ["data-theme", "class"],
-    });
-    return () => observer.disconnect();
-  }, []);
-
-  // Auto-dismiss für Toasts
-  useEffect(() => {
-    if (!showToast) return;
-    if (dismissTimer.current) window.clearTimeout(dismissTimer.current);
-    dismissTimer.current = window.setTimeout(() => setShowToast(null), 4000);
     return () => {
-      if (dismissTimer.current) window.clearTimeout(dismissTimer.current);
+      if (poller) window.clearInterval(poller);
+      themeObserver?.disconnect();
     };
-  }, [showToast]);
+  }, [isInView]);
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -114,7 +172,9 @@ export function ContactForm() {
         setToken(null);
         try {
           if (widgetIdRef.current) window.turnstile?.reset(widgetIdRef.current);
-        } catch {}
+        } catch {
+          // ignore
+        }
       } else {
         setState("err");
         setShowToast("err");
@@ -126,7 +186,12 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="grid gap-4 max-w-lg" noValidate>
+    <form
+      ref={formRef}
+      onSubmit={onSubmit}
+      className="grid gap-4 max-w-lg"
+      noValidate
+    >
       {/* Toast/Alert oben */}
       {showToast === "ok" && (
         <Alert kind="success" onClose={() => setShowToast(null)}>
@@ -203,7 +268,7 @@ export function ContactForm() {
         aria-hidden="true"
       />
 
-      {/* Turnstile-Widget */}
+      {/* Turnstile-Widget (lazy gerendert wenn im Viewport) */}
       <div className="mt-2" aria-live="polite" aria-busy={state === "loading"}>
         <div ref={widgetRef} className="cf-turnstile" />
         <p className="sr-only">
