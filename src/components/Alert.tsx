@@ -24,21 +24,18 @@ export function Alert({ kind, children, onClose }: AlertProps) {
     >
       <div className="flex items-start gap-3">
         <span aria-hidden="true">
-          {/* ℹ️ */}
-          {kind === "success" ? "✅" : kind === "error" ? "❌" : "ℹ️"}
-          {/* {kind === "success" ? "✔️" : kind === "error" ? "❌" : "ℹ️"} */}
-          {/* {kind === "success" ? "✔️" : kind === "error" ? "⚠️" : "ℹ️"} */}
+          {kind === "success" ? "✅" : kind === "error" ? "⚠️" : "ℹ️"}
         </span>
         <div className="text-sm leading-relaxed">{children}</div>
         {onClose && (
           <button
             type="button"
             onClick={onClose}
-            className="ml-auto btn btn-outline px-2 py-1 text-xs"
+            className="ml-auto btn btn-outline p-2 text-xs"
             aria-label="Close"
             title="Close"
           >
-            ✕
+            ❌
           </button>
         )}
       </div>
