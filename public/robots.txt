@@ -1,3 +1,4 @@
+# robots.txt — erlaubt Crawling, verweist auf Sitemap
 User-agent: *
 Allow: /
 
