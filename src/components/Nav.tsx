@@ -1,5 +1,5 @@
-import { useTranslation } from "react-i18next";
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useScrollSpy } from "../hooks/useScrollSpy";
 
 const SECTIONS = [
@@ -14,7 +14,7 @@ const SECTIONS = [
 export function Nav() {
   const { t, i18n } = useTranslation();
 
-  // Scroll-Spy
+  // --- Active section via scroll spy
   const ids = useMemo(() => SECTIONS.map((s) => s.id), []);
   const activeId = useScrollSpy(ids, {
     rootMargin: "-35% 0px -55% 0px",
@@ -25,12 +25,15 @@ export function Nav() {
     if (activeId !== current) setCurrent(activeId);
   }, [activeId, current]);
 
-  // Theme-State (Icon steuern) – initial aus DOM ableiten
-  const [isDark, setIsDark] = useState<boolean>(() =>
-    document.documentElement.classList.contains("dark")
+  // --- Theme toggle (persisted > system)
+  const [isDark, setIsDark] = useState<boolean>(
+    () =>
+      document.documentElement.classList.contains("dark") ||
+      document.documentElement.getAttribute("data-theme") === "dark"
   );
-  // Bootstrapping aus localStorage (falls vorhanden)
+
   useEffect(() => {
+    // Bootstrap aus localStorage respektieren (falls vorhanden)
     try {
       const theme = localStorage.getItem("theme");
       if (theme === "dark" || theme === "light") {
@@ -46,23 +49,35 @@ export function Nav() {
 
   function toggleTheme() {
     const root = document.documentElement;
-    const next = root.classList.contains("dark") ? "light" : "dark";
+    const next =
+      root.getAttribute("data-theme") === "dark" ||
+      root.classList.contains("dark")
+        ? "light"
+        : "dark";
+
     root.classList.toggle("dark", next === "dark");
     root.setAttribute("data-theme", next);
     try {
       localStorage.setItem("theme", next);
-    } catch {
-      /* noop */
-    }
+    } catch {}
     setIsDark(next === "dark");
   }
 
-  // Language toggle (persistiert via i18next-browser-languagedetector)
+  // --- Language toggle (updates URL ?lng=..., persists via detector)
   const lng = (i18n.resolvedLanguage || i18n.language || "en").toLowerCase();
   const isDE = lng.startsWith("de");
   const isEN = lng.startsWith("en");
+
   function setLang(code: "de" | "en") {
-    if (!lng.startsWith(code)) i18n.changeLanguage(code);
+    const cur = (i18n.resolvedLanguage || i18n.language || "en")
+      .toLowerCase()
+      .slice(0, 2) as "de" | "en";
+    if (code !== cur) {
+      i18n.changeLanguage(code);
+      const url = new URL(window.location.href);
+      url.searchParams.set("lng", code);
+      window.history.replaceState({}, "", url.toString());
+    }
   }
 
   return (
@@ -107,14 +122,17 @@ export function Nav() {
 
         {/* Actions: Language + Theme + Mobile CTA */}
         <div className="flex items-center gap-2">
-          {/* Language toggle (Desktop) */}
+          {/* Language toggle (links aktualisieren URL, verhindern Reload) */}
           <div
             className="hidden md:flex items-center gap-1"
             aria-label="Language"
           >
-            <button
-              type="button"
-              onClick={() => setLang("de")}
+            <a
+              href={isDE ? window.location.href : `?lng=de`}
+              onClick={(e) => {
+                e.preventDefault();
+                setLang("de");
+              }}
               className={[
                 "px-2 py-1 text-xs rounded-md border",
                 isDE
@@ -125,10 +143,13 @@ export function Nav() {
               title="Deutsch"
             >
               DE
-            </button>
-            <button
-              type="button"
-              onClick={() => setLang("en")}
+            </a>
+            <a
+              href={isEN ? window.location.href : `?lng=en`}
+              onClick={(e) => {
+                e.preventDefault();
+                setLang("en");
+              }}
               className={[
                 "px-2 py-1 text-xs rounded-md border",
                 isEN
@@ -139,25 +160,22 @@ export function Nav() {
               title="English"
             >
               EN
-            </button>
+            </a>
           </div>
 
-          {/* Theme toggle */}
+          {/* Theme toggle (manuelle Wahl > System) */}
           <button
             type="button"
             onClick={toggleTheme}
-            className="btn btn-outline px-3 py-1.5 text-sm"
+            className="btn px-3 py-1.5 text-sm"
             aria-label="Toggle dark / light"
             title="Toggle dark / light"
           >
-            {isDark ? "🌙" : "☀️"}
+            {isDark ? "☀️" : "🌙"}
           </button>
 
           {/* Mobile CTA */}
-          <a
-            href="#contact"
-            className="btn btn-primary text-sm px-3 py-1.5 md:hidden"
-          >
+          <a href="#contact" className="btn text-sm px-3 py-1.5 md:hidden">
             {t("nav.contact")}
           </a>
         </div>
