@@ -9,6 +9,8 @@ import { ExperienceItem } from "./components/ExperienceItem";
 import { SkillsGrid } from "./components/SkillsGrid";
 import { ContactForm } from "./components/ContactForm";
 
+import { Timeline, TimelineItem } from "./components/Timeline";
+
 type ExpItem = {
   role: string;
   company: string;
@@ -95,7 +97,6 @@ export default function App() {
             </a>
           </div>
         </Section>
-
         {/* About */}
         <Section id="about" title={t("nav.about")}>
           <p className="text-gray-700 dark:text-gray-300 max-w-prose">
@@ -108,7 +109,6 @@ export default function App() {
             {t("about.languagesLine")}
           </p>
         </Section>
-
         {/* Projects */}
         <Section id="projects" title={t("nav.projects")}>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -147,17 +147,36 @@ export default function App() {
 
         {/* Experience – aus i18n */}
         <Section id="experience" title={t("nav.experience")}>
-          <div className="grid gap-6">
-            {expItems.map((it) => (
-              <ExperienceItem
-                key={`${it.role} @ ${it.company}`}
-                role={it.role}
-                company={it.company}
-                period={it.period}
-                bullets={it.bullets}
-              />
-            ))}
-          </div>
+          {(() => {
+            const items = t("experience.items", {
+              returnObjects: true,
+            }) as Array<{
+              role: string;
+              company: string;
+              period: string;
+              bullets?: string[];
+              companyUrl?: string;
+              location?: string;
+              maxBulletsMobile?: number;
+            }>;
+            return (
+              <Timeline>
+                {items.map((it) => (
+                  <TimelineItem key={`${it.role} @ ${it.company}`}>
+                    <ExperienceItem
+                      role={it.role}
+                      company={it.company}
+                      period={it.period}
+                      bullets={it.bullets}
+                      companyUrl={(it.companyUrl as string) || undefined}
+                      location={(it.location as string) || undefined}
+                      maxBulletsMobile={it.maxBulletsMobile}
+                    />
+                  </TimelineItem>
+                ))}
+              </Timeline>
+            );
+          })()}
         </Section>
 
         {/* Skills – aus i18n */}

@@ -1,10 +1,14 @@
+import { useEffect, useState } from "react";
+
 type Props = {
   role: string;
   company: string;
-  period: string;
+  period: string; // z.B. "2024 — heute"
   bullets?: string[];
   companyUrl?: string;
   location?: string;
+  /** Wie viele Bullet-Points auf Mobile initial sichtbar sind */
+  maxBulletsMobile?: number;
 };
 
 export function ExperienceItem({
@@ -14,31 +18,40 @@ export function ExperienceItem({
   bullets = [],
   companyUrl,
   location,
+  maxBulletsMobile = 1,
 }: Props) {
   const titleId = `exp-${slugify(`${role}-${company}-${period}`)}`;
 
+  // Mobile-Erkennung für das Collapsing der Bullets
+  const [isMobile, setIsMobile] = useState(true);
+  const [expanded, setExpanded] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const apply = () => setIsMobile(!mq.matches);
+    apply();
+    mq.addEventListener?.("change", apply);
+    return () => mq.removeEventListener?.("change", apply);
+  }, []);
+
+  const visibleBullets =
+    isMobile && !expanded ? bullets.slice(0, maxBulletsMobile) : bullets;
+  const hasHidden = isMobile && bullets.length > visibleBullets.length;
+
   return (
     <article
-      className={[
-        "relative rounded-2xl border p-5 shadow-sm bg-white dark:bg-neutral-900",
-        "transition-[transform,box-shadow] duration-200 ease-out motion-reduce:transition-none",
-        "hover:-translate-y-0.5 hover:shadow-md",
-      ].join(" ")}
+      className="
+        rounded-2xl border p-4 md:p-5 shadow-sm bg-white dark:bg-neutral-900
+        transition-[transform,box-shadow] duration-200 ease-out
+        hover:-translate-y-0.5 hover:shadow-md motion-reduce:transition-none
+      "
       aria-labelledby={titleId}
     >
-      {/* Timeline (nur >= md) */}
-      <span
-        aria-hidden="true"
-        className="hidden md:block absolute left-[-13px] top-6 h-3 w-3 rounded-full bg-gray-900 dark:bg-gray-100 ring-4 ring-white dark:ring-neutral-900"
-      />
-      <span
-        aria-hidden="true"
-        className="hidden md:block absolute left-[-8px] top-10 bottom-[-20px] w-px bg-gray-200 dark:bg-neutral-700"
-      />
-
-      {/* Header */}
-      <header className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
-        <h3 id={titleId} className="text-lg font-semibold leading-tight">
+      <header className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+        <h3
+          id={titleId}
+          className="text-base md:text-lg font-semibold leading-tight"
+        >
           {role}
         </h3>
 
@@ -67,29 +80,66 @@ export function ExperienceItem({
           </>
         )}
 
-        <time className="ml-auto text-sm text-gray-500 dark:text-gray-400">
+        <time className="ml-auto text-xs md:text-sm text-gray-500 dark:text-gray-400">
           {period}
         </time>
       </header>
 
-      {/* Bullets */}
       {bullets.length > 0 && (
-        <ul
-          role="list"
-          className="mt-3 grid gap-1.5 pl-5 text-sm text-gray-700 dark:text-gray-300 list-disc marker:text-gray-400 dark:marker:text-gray-500"
-        >
-          {bullets.map((b) => (
-            <li key={b} role="listitem">
-              {b}
-            </li>
-          ))}
-        </ul>
+        <>
+          <ul
+            role="list"
+            className="mt-3 md:mt-3.5 space-y-1.5 md:space-y-2 text-sm md:text-[0.95rem] text-gray-700 dark:text-gray-300"
+          >
+            {visibleBullets.map((b) => (
+              <li key={b} role="listitem" className="list-disc ms-5">
+                {b}
+              </li>
+            ))}
+          </ul>
+
+          {hasHidden && (
+            <div className="mt-2">
+              <button
+                type="button"
+                onClick={() => setExpanded((v) => !v)}
+                className="text-sm inline-flex items-center gap-1 rounded-lg px-2 py-1 border hover:bg-gray-50 dark:hover:bg-neutral-800"
+                aria-expanded={expanded}
+                aria-controls={`${titleId}-more`}
+              >
+                {expanded
+                  ? "Show less"
+                  : `Show ${bullets.length - visibleBullets.length} more`}
+                <ChevronDown
+                  className={expanded ? "rotate-180 transition" : "transition"}
+                />
+              </button>
+            </div>
+          )}
+        </>
       )}
     </article>
   );
 }
 
-/* ---------------- Utils ---------------- */
+function ChevronDown({ className = "" }: { className?: string }) {
+  return (
+    <svg
+      className={["w-4 h-4", className].join(" ")}
+      viewBox="0 0 24 24"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path
+        d="M6 9l6 6 6-6"
+        stroke="currentColor"
+        strokeWidth={2}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
 
 function slugify(s: string) {
   return s
