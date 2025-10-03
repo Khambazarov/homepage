@@ -193,12 +193,15 @@ i18n
     supportedLngs: ["de", "en"],
     nonExplicitSupportedLngs: true,
     detection: {
-      order: ["localStorage", "navigator", "htmlTag"],
+      // SEO/Share-freundlich: ?lng=de|en gewinnt, danach Persistenz/System
+      order: ["querystring", "localStorage", "navigator", "htmlTag"],
+      lookupQuerystring: "lng",
       caches: ["localStorage"],
     },
     interpolation: { escapeValue: false },
   });
 
+// <html lang="..."> aktuell halten
 document.documentElement.setAttribute("lang", i18n.resolvedLanguage || "en");
 i18n.on("languageChanged", (lng) => {
   document.documentElement.setAttribute("lang", lng || "en");
