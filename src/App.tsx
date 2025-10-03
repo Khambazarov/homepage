@@ -9,8 +9,20 @@ import { ExperienceItem } from "./components/ExperienceItem";
 import { SkillsGrid } from "./components/SkillsGrid";
 import { ContactForm } from "./components/ContactForm";
 
+type ExpItem = {
+  role: string;
+  company: string;
+  period: string;
+  bullets?: string[];
+};
+
+type SkillCategory = {
+  name: string;
+  items: string[];
+};
+
 export default function App() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   // Aktive Section ermitteln (wie in Nav)
   const sectionIds = useMemo(
@@ -21,6 +33,20 @@ export default function App() {
     rootMargin: "-35% 0px -55% 0px",
     threshold: [0, 0.25, 0.5, 0.75, 1],
   });
+
+  // i18n: Experience/Skills aus Resources (bei Sprachwechsel neu berechnen)
+  const expItems = useMemo(
+    () =>
+      t("experience.items", { returnObjects: true }) as unknown as ExpItem[],
+    [t, i18n.language]
+  );
+  const skillCats = useMemo(
+    () =>
+      t("skills.categories", {
+        returnObjects: true,
+      }) as unknown as SkillCategory[],
+    [t, i18n.language]
+  );
 
   // Dokumenttitel dynamisch setzen
   useEffect(() => {
@@ -35,13 +61,13 @@ export default function App() {
     const base = "Renat Khambazarov — Portfolio";
     document.title =
       activeId && map[activeId] ? `${map[activeId]} — ${base}` : base;
-
     // Optional: Hash in URL pflegen, ohne Scroll-Jump
     // if (activeId) history.replaceState(null, "", `#${activeId}`);
   }, [activeId, t]);
 
   return (
     <>
+      {/* Skip-Link */}
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-white dark:focus:bg-neutral-900 focus:text-black dark:focus:text-white focus:px-3 focus:py-2 focus:shadow"
@@ -50,7 +76,9 @@ export default function App() {
       </a>
 
       <Nav />
+
       <main id="main" role="main" className="container-max">
+        {/* Home / Hero */}
         <Section id="home">
           <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
             {t("hero.title")}
@@ -68,6 +96,7 @@ export default function App() {
           </div>
         </Section>
 
+        {/* About */}
         <Section id="about" title={t("nav.about")}>
           <p className="text-gray-700 dark:text-gray-300 max-w-prose">
             {t("about.intro")}
@@ -80,6 +109,7 @@ export default function App() {
           </p>
         </Section>
 
+        {/* Projects */}
         <Section id="projects" title={t("nav.projects")}>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             <ProjectCard
@@ -100,7 +130,10 @@ export default function App() {
               ]}
               live="https://hello-word.khambazarov.dev/"
               repo="https://github.com/Khambazarov/hello-word/"
+              status="live"
             />
+
+            {/* WIP: Live absichtlich weggelassen => Button disabled; Repo aktiv */}
             <ProjectCard
               title="Hello World Mailer"
               desc="Minimal demo for transactional email delivery."
@@ -111,50 +144,34 @@ export default function App() {
             />
           </div>
         </Section>
+
+        {/* Experience – aus i18n */}
         <Section id="experience" title={t("nav.experience")}>
-          {(() => {
-            const items = t("experience.items", {
-              returnObjects: true,
-            }) as Array<{
-              role: string;
-              company: string;
-              period: string;
-              bullets?: string[];
-            }>;
-
-            return (
-              <div className="grid gap-6">
-                {items.map((it) => (
-                  <ExperienceItem
-                    key={`${it.role} @ ${it.company}`}
-                    role={it.role}
-                    company={it.company}
-                    period={it.period}
-                    bullets={it.bullets}
-                  />
-                ))}
-              </div>
-            );
-          })()}
+          <div className="grid gap-6">
+            {expItems.map((it) => (
+              <ExperienceItem
+                key={`${it.role} @ ${it.company}`}
+                role={it.role}
+                company={it.company}
+                period={it.period}
+                bullets={it.bullets}
+              />
+            ))}
+          </div>
         </Section>
 
+        {/* Skills – aus i18n */}
         <Section id="skills" title={t("nav.skills")}>
-          {(() => {
-            const categories = t("skills.categories", {
-              returnObjects: true,
-            }) as Array<{
-              name: string;
-              items: string[];
-            }>;
-            return <SkillsGrid categories={categories} />;
-          })()}
+          <SkillsGrid categories={skillCats} />
         </Section>
 
+        {/* Contact */}
         <Section id="contact" title={t("nav.contact")}>
           <ContactForm />
         </Section>
       </main>
 
+      {/* Footer */}
       <footer className="mt-16 border-t">
         <div className="container-max py-8 text-sm text-gray-500 dark:text-gray-400">
           <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-6 w-full">
@@ -172,7 +189,6 @@ export default function App() {
                 aria-label="Impressum"
                 title="Impressum"
               >
-                {/* document icon */}
                 <svg
                   width="18"
                   height="18"
@@ -192,7 +208,6 @@ export default function App() {
                 aria-label="Datenschutz"
                 title="Datenschutz"
               >
-                {/* shield icon */}
                 <svg
                   width="18"
                   height="18"
