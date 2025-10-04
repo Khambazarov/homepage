@@ -82,7 +82,7 @@ export default function App() {
       <main id="main" role="main" className="container-max">
         {/* Home / Hero */}
         <Section id="home">
-          <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
+          <h1 className="text-4xl md:text-[2.5rem] lg:text-5xl font-bold leading-tight mb-4">
             {t("hero.title")}
           </h1>
           <p className="text-gray-600 dark:text-gray-300 max-w-prose">
@@ -99,13 +99,13 @@ export default function App() {
         </Section>
         {/* About */}
         <Section id="about" title={t("nav.about")}>
-          <p className="text-gray-700 dark:text-gray-300 max-w-prose">
+          <p className="text-gray-700 dark:text-gray-300 max-w-prose mt-1.5">
             {t("about.intro")}
           </p>
-          <p className="mt-2 text-gray-700 dark:text-gray-300 max-w-prose">
+          <p className="mt-1.5 text-gray-700 dark:text-gray-300 max-w-prose">
             {t("about.cta")}
           </p>
-          <p className="mt-2 text-gray-700 dark:text-gray-300 max-w-prose">
+          <p className="mt-1.5 text-gray-700 dark:text-gray-300 max-w-prose">
             {t("about.languagesLine")}
           </p>
         </Section>
