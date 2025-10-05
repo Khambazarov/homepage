@@ -8,14 +8,17 @@ import { ProjectCard } from "./components/ProjectCard";
 import { ExperienceItem } from "./components/ExperienceItem";
 import { SkillsGrid } from "./components/SkillsGrid";
 import { ContactForm } from "./components/ContactForm";
-
 import { Timeline, TimelineItem } from "./components/Timeline";
 
+// --- Types aus i18n-Ressourcen (Experience/Skills)
 type ExpItem = {
   role: string;
   company: string;
   period: string;
   bullets?: string[];
+  companyUrl?: string;
+  location?: string;
+  maxBulletsMobile?: number;
 };
 
 type SkillCategory = {
@@ -24,7 +27,7 @@ type SkillCategory = {
 };
 
 export default function App() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   // Aktive Section ermitteln (wie in Nav)
   const sectionIds = useMemo(
@@ -39,15 +42,18 @@ export default function App() {
   // i18n: Experience/Skills aus Resources (bei Sprachwechsel neu berechnen)
   const expItems = useMemo(
     () =>
-      t("experience.items", { returnObjects: true }) as unknown as ExpItem[],
-    [t, i18n.language]
+      (t("experience.items", {
+        returnObjects: true,
+      }) as unknown as ExpItem[]) ?? [],
+    [t]
   );
+
   const skillCats = useMemo(
     () =>
-      t("skills.categories", {
+      (t("skills.categories", {
         returnObjects: true,
-      }) as unknown as SkillCategory[],
-    [t, i18n.language]
+      }) as unknown as SkillCategory[]) ?? [],
+    [t]
   );
 
   // Dokumenttitel dynamisch setzen
@@ -63,6 +69,7 @@ export default function App() {
     const base = "Renat Khambazarov — Portfolio";
     document.title =
       activeId && map[activeId] ? `${map[activeId]} — ${base}` : base;
+
     // Optional: Hash in URL pflegen, ohne Scroll-Jump
     // if (activeId) history.replaceState(null, "", `#${activeId}`);
   }, [activeId, t]);
@@ -82,7 +89,7 @@ export default function App() {
       <main id="main" role="main" className="container-max">
         {/* Home / Hero */}
         <Section id="home">
-          <h1 className="text-4xl md:text-[2.5rem] lg:text-5xl font-bold leading-tight mb-4">
+          <h1 className="text-4xl md:text-[2.5rem] lg:text-5xl font-bold leading-[1.15] mb-4">
             {t("hero.title")}
           </h1>
           <p className="text-gray-600 dark:text-gray-300 max-w-prose">
@@ -97,6 +104,7 @@ export default function App() {
             </a>
           </div>
         </Section>
+
         {/* About */}
         <Section id="about" title={t("nav.about")}>
           <p className="text-gray-700 dark:text-gray-300 max-w-prose mt-1.5">
@@ -109,6 +117,7 @@ export default function App() {
             {t("about.languagesLine")}
           </p>
         </Section>
+
         {/* Projects */}
         <Section id="projects" title={t("nav.projects")}>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -133,7 +142,7 @@ export default function App() {
               status="live"
             />
 
-            {/* WIP: Live absichtlich weggelassen => Button disabled; Repo aktiv */}
+            {/* WIP-Policy (in ProjectCard umgesetzt): Live disabled, Repo aktiv */}
             <ProjectCard
               title="Hello World Mailer"
               desc="Minimal demo for transactional email delivery."
@@ -145,41 +154,26 @@ export default function App() {
           </div>
         </Section>
 
-        {/* Experience – aus i18n */}
+        {/* Experience */}
         <Section id="experience" title={t("nav.experience")}>
-          {(() => {
-            const items = t("experience.items", {
-              returnObjects: true,
-            }) as Array<{
-              role: string;
-              company: string;
-              period: string;
-              bullets?: string[];
-              companyUrl?: string;
-              location?: string;
-              maxBulletsMobile?: number;
-            }>;
-            return (
-              <Timeline>
-                {items.map((it) => (
-                  <TimelineItem key={`${it.role} @ ${it.company}`}>
-                    <ExperienceItem
-                      role={it.role}
-                      company={it.company}
-                      period={it.period}
-                      bullets={it.bullets}
-                      companyUrl={(it.companyUrl as string) || undefined}
-                      location={(it.location as string) || undefined}
-                      maxBulletsMobile={it.maxBulletsMobile}
-                    />
-                  </TimelineItem>
-                ))}
-              </Timeline>
-            );
-          })()}
+          <Timeline>
+            {expItems.map((it) => (
+              <TimelineItem key={`${it.role}-${it.company}-${it.period}`}>
+                <ExperienceItem
+                  role={it.role}
+                  company={it.company}
+                  period={it.period}
+                  bullets={it.bullets}
+                  companyUrl={it.companyUrl}
+                  location={it.location}
+                  maxBulletsMobile={it.maxBulletsMobile}
+                />
+              </TimelineItem>
+            ))}
+          </Timeline>
         </Section>
 
-        {/* Skills – aus i18n */}
+        {/* Skills */}
         <Section id="skills" title={t("nav.skills")}>
           <SkillsGrid categories={skillCats} />
         </Section>
