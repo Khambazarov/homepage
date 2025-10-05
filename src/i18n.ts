@@ -89,6 +89,35 @@ const resources = {
           },
         ],
       },
+      contact: {
+        labels: {
+          company: "Firma (optional)",
+          name: "Name",
+          email: "E-Mail",
+          message: "Nachricht",
+        },
+        placeholders: {
+          company: "Deine Firma",
+          name: "Dein Name",
+          email: "Deine E-Mail",
+          message: "Deine Nachricht",
+        },
+        actions: {
+          send: "Senden",
+          sending: "Senden…",
+          preferEmail: "Lieber E-Mail?",
+        },
+        status: {
+          success: "Danke! Ich melde mich zeitnah.",
+          error:
+            "Hoppla, da ist etwas schiefgelaufen. Bitte Captcha prüfen und erneut versuchen oder kontaktiere mich direkt per E-Mail.",
+        },
+        a11y: {
+          formLabel: "Kontaktformular",
+          turnstileNote:
+            "Dieses Formular wird von Cloudflare Turnstile gegen Spam geschützt.",
+        },
+      },
       footer: { imprint: "Impressum", privacy: "Datenschutz" },
     },
   },
@@ -177,6 +206,35 @@ const resources = {
             ],
           },
         ],
+      },
+      contact: {
+        labels: {
+          company: "Company (optional)",
+          name: "Name",
+          email: "Email",
+          message: "Message",
+        },
+        placeholders: {
+          company: "Your company",
+          name: "Your name",
+          email: "Your email",
+          message: "Your message",
+        },
+        actions: {
+          send: "Send",
+          sending: "Sending…",
+          preferEmail: "Prefer email?",
+        },
+        status: {
+          success: "Thanks! I’ll get back to you soon.",
+          error:
+            "Oops, something went wrong. Please try again later or contact me directly via email.",
+        },
+        a11y: {
+          formLabel: "Contact form",
+          turnstileNote:
+            "This form is protected by Cloudflare Turnstile to prevent spam.",
+        },
       },
       footer: { imprint: "Imprint", privacy: "Privacy" },
     },
