@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Alert } from "./Alert";
 
 type State = "idle" | "loading" | "ok" | "err";
@@ -16,6 +17,7 @@ declare global {
 }
 
 export function ContactForm() {
+  const { t } = useTranslation();
   const [state, setState] = useState<State>("idle");
   const [token, setToken] = useState<string | null>(null);
   const [showToast, setShowToast] = useState<null | "ok" | "err">(null);
@@ -191,70 +193,74 @@ export function ContactForm() {
       onSubmit={onSubmit}
       className="grid gap-4 max-w-lg"
       noValidate
+      aria-label={t("contact.a11y.formLabel", "Contact form")}
     >
       {/* Toast/Alert oben */}
       {showToast === "ok" && (
         <Alert kind="success" onClose={() => setShowToast(null)}>
-          Thanks! I’ll get back to you soon.
+          {t("contact.status.success")}
         </Alert>
       )}
       {showToast === "err" && (
         <Alert kind="error" onClose={() => setShowToast(null)}>
-          Sending failed. Please check the captcha and try again.
+          {t("contact.status.error")}
         </Alert>
       )}
 
       {/* Firma */}
       <label className="grid gap-1">
-        <span className="text-sm">Firma (optional)</span>
+        <span className="text-sm">{t("contact.labels.company")}</span>
         <input
           name="company"
           autoComplete="organization"
           className="input"
-          placeholder="Your company"
-          aria-label="Company"
+          placeholder={t("contact.placeholders.company")}
+          aria-required="false"
+          aria-label={t("contact.labels.company")}
         />
       </label>
 
       {/* Name */}
       <label className="grid gap-1">
-        <span className="text-sm">Name</span>
+        <span className="text-sm">{t("contact.labels.name")}</span>
         <input
           name="name"
           required
           autoComplete="name"
           className="input"
-          placeholder="Your name"
-          aria-label="Name"
+          placeholder={t("contact.placeholders.name")}
+          aria-required="true"
+          aria-label={t("contact.labels.name")}
         />
       </label>
 
       {/* E-Mail */}
       <label className="grid gap-1">
-        <span className="text-sm">E-Mail</span>
+        <span className="text-sm">{t("contact.labels.email")}</span>
         <input
           name="email"
           type="email"
           required
           autoComplete="email"
           className="input"
-          placeholder="you@example.com"
-          aria-label="Email"
+          placeholder={t("contact.placeholders.email")}
+          aria-required="true"
+          aria-label={t("contact.labels.email")}
         />
       </label>
 
       {/* Nachricht */}
       <label className="grid gap-1">
-        <span className="text-sm">Nachricht</span>
+        <span className="text-sm">{t("contact.labels.message")}</span>
         <textarea
           name="message"
           required
           className="input min-h-32"
-          placeholder="Your message"
           rows={8}
           minLength={10}
+          placeholder={t("contact.placeholders.message")}
           aria-required="true"
-          aria-label="Message"
+          aria-label={t("contact.labels.message")}
         />
       </label>
 
@@ -271,9 +277,7 @@ export function ContactForm() {
       {/* Turnstile-Widget (lazy gerendert wenn im Viewport) */}
       <div className="mt-2" aria-live="polite" aria-busy={state === "loading"}>
         <div ref={widgetRef} className="cf-turnstile" />
-        <p className="sr-only">
-          This form is protected by Cloudflare Turnstile to prevent spam.
-        </p>
+        <p className="sr-only">{t("contact.a11y.turnstileNote")}</p>
       </div>
 
       <div className="flex items-center gap-3">
@@ -283,11 +287,13 @@ export function ContactForm() {
           disabled={state === "loading"}
           aria-busy={state === "loading"}
         >
-          {state === "loading" ? "Sending…" : "Send"}
+          {state === "loading"
+            ? t("contact.actions.sending")
+            : t("contact.actions.send")}
         </button>
 
         <a className="link" href="mailto:contact@khambazarov.dev">
-          Prefer email? contact@khambazarov.dev
+          {t("contact.actions.preferEmail")} contact@khambazarov.dev
         </a>
       </div>
     </form>
