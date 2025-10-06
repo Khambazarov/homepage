@@ -77,8 +77,29 @@
           Cantarell, Noto Sans, Helvetica Neue, Arial, "Apple Color Emoji",
           "Segoe UI Emoji";
       }
+      .wrap {
+        width: min(760px, 92vw);
+        position: relative;
+      }
+      .lang {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 36px;
+        min-width: 48px;
+        padding: 0 12px;
+        border-radius: 12px;
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--fg);
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        cursor: pointer;
+      }
       .card {
-        width: min(720px, 92vw);
         border: 1px solid var(--border);
         border-radius: 16px;
         background: var(--surface);
@@ -151,34 +172,135 @@
     </style>
   </head>
   <body>
-    <main class="card" role="main">
-      <span class="badge" aria-hidden="true">404 • Not Found</span>
-      <h1 class="title">Page not found</h1>
-      <p class="copy">
-        The page you’re looking for doesn’t exist or was moved.<br />
-        <span lang="de"
-          >Die angeforderte Seite existiert nicht oder wurde verschoben.</span
-        >
-      </p>
-      <div class="row" role="navigation" aria-label="Page options">
-        <a class="btn" href="/">
-          Back to Home
-          <svg class="arrow" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M3 12h14" stroke-linecap="round" />
-            <path
-              d="M13 6l6 6-6 6"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-        </a>
-        <a class="btn btn-soft" href="/#contact">Contact</a>
-        <a class="btn btn-soft" href="/#projects">Projects</a>
-      </div>
-      <p class="kicker">
-        If you believe this is an error, please contact me:
-        <a href="mailto:contact@khambazarov.dev">contact@khambazarov.dev</a>
-      </p>
-    </main>
+    <div class="wrap">
+      <!-- Language toggle: label shows target language -->
+      <button id="langBtn" class="lang" aria-label="Switch language">DE</button>
+
+      <main class="card" role="main">
+        <span class="badge" id="badge">404 • Not Found</span>
+        <h1 class="title" id="title">Page not found</h1>
+        <p class="copy" id="copy">
+          The page you’re looking for doesn’t exist or was moved.<br />
+          <span id="copy2"
+            >Die angeforderte Seite existiert nicht oder wurde verschoben.</span
+          >
+        </p>
+        <div class="row" role="navigation" aria-label="Page options">
+          <a class="btn" href="/" id="ctaHome">
+            <span id="ctaHomeText">Back to Home</span>
+            <svg
+              class="arrow"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path d="M3 12h14" stroke-linecap="round" />
+              <path
+                d="M13 6l6 6-6 6"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </a>
+          <a class="btn btn-soft" href="/#contact" id="ctaContact">Contact</a>
+          <a class="btn btn-soft" href="/#projects" id="ctaProjects"
+            >Projects</a
+          >
+        </div>
+        <p class="kicker" id="kicker">
+          If you believe this is an error, please contact me:
+          <a href="mailto:contact@khambazarov.dev">contact@khambazarov.dev</a>
+        </p>
+      </main>
+    </div>
+
+    <script>
+      (function () {
+        const $ = (id) => document.getElementById(id);
+
+        // Minimal i18n dict
+        const dict = {
+          en: {
+            badge: "404 • Not Found",
+            title: "Page not found",
+            copy: "The page you’re looking for doesn’t exist or was moved.",
+            copy2:
+              "Die angeforderte Seite existiert nicht oder wurde verschoben.",
+            home: "Back to Home",
+            contact: "Contact",
+            projects: "Projects",
+            kicker: "If you believe this is an error, please contact me:",
+            targetLabel: "DE", // button shows target language
+          },
+          de: {
+            badge: "404 • Nicht gefunden",
+            title: "Seite nicht gefunden",
+            copy: "Die angeforderte Seite existiert nicht oder wurde verschoben.",
+            copy2: "The requested page does not exist or was moved.",
+            home: "Zur Startseite",
+            contact: "Kontakt",
+            projects: "Projekte",
+            kicker: "Falls dies ein Fehler ist, kontaktiere mich bitte:",
+            targetLabel: "EN",
+          },
+        };
+
+        function pickInitialLang() {
+          try {
+            const fromQs = new URL(location.href).searchParams.get("lng");
+            if (fromQs && (fromQs === "de" || fromQs === "en")) return fromQs;
+            const fromLs = localStorage.getItem("i18nLng");
+            if (fromLs) {
+              const base = fromLs.slice(0, 2).toLowerCase();
+              if (base === "de" || base === "en") return base;
+            }
+            const nav = (navigator.language || "en").slice(0, 2).toLowerCase();
+            return nav === "de" ? "de" : "en";
+          } catch {
+            return "en";
+          }
+        }
+
+        function applyLang(lng) {
+          const t = dict[lng] || dict.en;
+          document.documentElement.setAttribute("lang", lng);
+
+          $("badge").textContent = t.badge;
+          $("title").textContent = t.title;
+          $("copy").firstChild.nodeValue = t.copy + " ";
+          $("copy2").textContent = t.copy2;
+          $("ctaHomeText").textContent = t.home;
+          $("ctaContact").textContent = t.contact;
+          $("ctaProjects").textContent = t.projects;
+          $("kicker").firstChild.nodeValue =
+            lng === "de"
+              ? "Falls dies ein Fehler ist, kontaktiere mich bitte: "
+              : "If you believe this is an error, please contact me: ";
+
+          // Button label = target language (like your main nav)
+          $("langBtn").textContent = t.targetLabel;
+
+          // persist (align with i18next detector)
+          try {
+            localStorage.setItem("i18nLng", lng);
+          } catch {}
+        }
+
+        const current = pickInitialLang();
+        applyLang(current);
+
+        $("langBtn").addEventListener("click", () => {
+          const next =
+            document.documentElement.getAttribute("lang") === "de"
+              ? "en"
+              : "de";
+          // update URL ?lng=... (no reload)
+          const url = new URL(location.href);
+          url.searchParams.set("lng", next);
+          history.replaceState({}, "", url.toString());
+          applyLang(next);
+        });
+      })();
+    </script>
   </body>
 </html>
