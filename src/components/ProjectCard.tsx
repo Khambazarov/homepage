@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useState } from "react";
 
 /* --------------------------------- Types --------------------------------- */
 
@@ -33,31 +33,35 @@ export const ProjectCard = React.memo(function ProjectCard({
   return (
     <article
       className={[
-        "rounded-2xl border p-5 shadow-sm bg-white dark:bg-neutral-900",
+        "relative h-full min-h-[280px] flex flex-col rounded-2xl border p-5 shadow-sm",
+        "bg-white dark:bg-neutral-900",
         "transition-shadow duration-200 ease-out motion-reduce:transition-none hover:shadow-md",
         isWip ? "opacity-95" : "",
       ].join(" ")}
       aria-labelledby={titleId}
       data-status={status}
     >
+      {/* Status-Badge schwebend oben rechts (kleiner als Titelzeile) */}
+      <div className="absolute top-3 right-3">
+        <StatusBadge isWip={isWip} />
+      </div>
+
       {/* Header */}
-      <header className="flex items-start gap-3">
+      <header className="pr-16">
         <h3 id={titleId} className="text-xl font-semibold leading-tight">
           {title}
         </h3>
-        <div className="ml-auto">
-          <StatusBadge isWip={isWip} />
-        </div>
       </header>
 
-      {/* Beschreibung */}
-      <p className="mt-2 text-sm text-gray-700 dark:text-gray-300">{desc}</p>
+      {/* Content */}
+      <div className="mt-2 flex flex-col gap-3">
+        <p className="text-sm text-gray-700 dark:text-gray-300">{desc}</p>
 
-      {/* Tech-Stack als Liste */}
-      <TechBadges items={stack} className="mt-3" maxVisible={8} />
+        <TechBadges items={stack} defaultVisible={8} />
+      </div>
 
       {/* Actions */}
-      <div className="mt-4 flex flex-wrap gap-3">
+      <div className="mt-auto pt-4 flex flex-wrap gap-3">
         {/* Live */}
         {liveEnabled ? (
           <a
@@ -106,70 +110,85 @@ function StatusBadge({ isWip }: { isWip: boolean }) {
   if (!isWip) {
     return (
       <span
-        className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium text-gray-700 dark:text-gray-200"
+        className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium text-gray-700 dark:text-gray-200 bg-white/70 dark:bg-neutral-900/70 backdrop-blur"
         aria-label="Status: Live"
         title="Status: Live"
       >
-        <span
-          className="h-1.5 w-1.5 rounded-full bg-green-500"
-          aria-hidden="true"
-        />
+        <span className="h-1.5 w-1.5 rounded-full bg-green-500" aria-hidden />
         Live
       </span>
     );
   }
   return (
     <span
-      className="text-nowrap inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium text-gray-700 dark:text-gray-200"
+      className="inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-xs font-medium text-gray-700 dark:text-gray-200 bg-white/70 dark:bg-neutral-900/70 backdrop-blur"
       aria-label="Status: Work in progress"
       title="Status: Work in progress"
     >
       <span
         className="h-1.5 w-1.5 rounded-full bg-amber-500 animate-pulse motion-reduce:animate-none"
-        aria-hidden="true"
+        aria-hidden
       />
       In Progress
     </span>
   );
 }
 
+/* Tech-Badges mit Expand/Collapse */
 function TechBadges({
   items,
   className,
-  maxVisible = 8,
+  defaultVisible = 8,
 }: {
   items: string[];
   className?: string;
-  maxVisible?: number;
+  defaultVisible?: number;
 }) {
-  const visible = items.slice(0, maxVisible);
-  const hidden = items.slice(maxVisible);
+
+  const [expanded, setExpanded] = useState(false);
+
+  const { visible, hidden } = useMemo(() => {
+    if (expanded) return { visible: items, hidden: [] as string[] };
+    const v = items.slice(0, defaultVisible);
+    const h = items.slice(defaultVisible);
+    return { visible: v, hidden: h };
+  }, [expanded, items, defaultVisible]);
 
   return (
-    <ul
-      role="list"
+    <div
       className={["flex flex-wrap gap-2", className].filter(Boolean).join(" ")}
     >
       {visible.map((it) => (
-        <li
+        <span
           key={it}
-          role="listitem"
           className="rounded-md border px-2 py-0.5 text-xs text-gray-700 dark:text-gray-200"
         >
           {it}
-        </li>
+        </span>
       ))}
-      {hidden.length > 0 && (
-        <li
-          role="listitem"
-          className="rounded-md border px-2 py-0.5 text-xs text-gray-700 dark:text-gray-200"
-          title={hidden.join(", ")}
-          aria-label={`More: ${hidden.join(", ")}`}
+
+      {/* +N more => Button, klappt auf; im expandierten Zustand „− show less“ */}
+      {hidden.length > 0 && !expanded && (
+        <button
+          type="button"
+          onClick={() => setExpanded(true)}
+          className="rounded-md border px-2 py-0.5 text-xs text-gray-700 dark:text-gray-200 underline-offset-2 hover:underline"
+          aria-label={`Show ${hidden.length} more technologies`}
         >
           +{hidden.length} more
-        </li>
+        </button>
       )}
-    </ul>
+      {expanded && items.length > defaultVisible && (
+        <button
+          type="button"
+          onClick={() => setExpanded(false)}
+          className="rounded-md border px-2 py-0.5 text-xs text-gray-700 dark:text-gray-200 underline-offset-2 hover:underline"
+          aria-label="Show fewer technologies"
+        >
+          − show less
+        </button>
+      )}
+    </div>
   );
 }
 
@@ -199,7 +218,6 @@ function ButtonDisabled({ label, reason }: { label: string; reason: string }) {
 /* ---------------------------------- Icons --------------------------------- */
 
 function ArrowRightIcon({ className = "" }: { className?: string }) {
-  // größer (20×20), dicker (stroke 2.5), horizontale Linie + Pfeilspitze
   return (
     <svg
       className={["w-5 h-5 stroke-[2.5] text-current", className].join(" ")}
