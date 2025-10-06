@@ -134,7 +134,7 @@ function StatusBadge({ isWip }: { isWip: boolean }) {
   );
 }
 
-/* Tech-Badges mit Expand/Collapse */
+/* Tech-Badges - Expand/Collapse */
 function TechBadges({
   items,
   className,
@@ -167,7 +167,6 @@ function TechBadges({
         </span>
       ))}
 
-      {/* +N more => Button, klappt auf; im expandierten Zustand „− show less“ */}
       {hidden.length > 0 && !expanded && (
         <button
           type="button"
