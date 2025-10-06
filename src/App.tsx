@@ -118,19 +118,20 @@ export default function App() {
           </p>
         </Section>
 
-        {/* Projects */}
+        {/* ================= Projects ================= */}
         <Section id="projects" title={t("nav.projects")}>
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {/* Realtime Chat App */}
             <ProjectCard
               title="Realtime Chat App"
-              desc="Full-stack chat with authentication and websockets."
+              desc="Full-stack chat with auth, sessions, and websockets."
               stack={[
                 "React",
                 "JavaScript (ES6+)",
-                "Zod",
                 "Tailwind CSS",
+                "Zod",
                 "Node.js",
-                "Express.js",
+                "Express",
                 "Socket.io",
                 "MongoDB",
                 "Mongoose",
@@ -142,14 +143,54 @@ export default function App() {
               status="live"
             />
 
-            {/* WIP-Policy (in ProjectCard umgesetzt): Live disabled, Repo aktiv */}
+            {/* My previous Portfolio */}
             <ProjectCard
-              title="Hello World Mailer"
-              desc="Minimal demo for transactional email delivery."
-              stack={["Node.js", "Express.js", "Nodemailer"]}
-              live="https://hello-word.khambazarov.dev/"
-              repo="https://github.com/Khambazarov/hello-word/"
+              title="My previous portfolio"
+              desc="This very website, built with React, TypeScript, and Tailwind CSS."
+              stack={["ReactTS", "Tailwind CSS", "Vite", "i18next"]}
+              live="https://khambazarov.dev/"
+              repo="https://github.com/Khambazarov/portfolio/"
+              status="live"
+            />
+
+            {/* Fensterputzer A&G */}
+            <ProjectCard
+              title="Fensterputzer A&G"
+              desc="Website for a local window cleaning business."
+              stack={["ReactTS", "Tailwind CSS", "Vite"]}
+              live="https://fensterputzer-ag.de/"
+              repo=""
               status="wip"
+            />
+
+            {/* Randomizer App */}
+            <ProjectCard
+              title="Randomizer App"
+              desc="Generate random groups and make decisions."
+              stack={["ReactJS", "CSS", "Vite"]}
+              live="https://randomizer.khambazarov.dev/"
+              repo="https://github.com/Khambazarov/random-generator/"
+              status="live"
+            />
+
+            {/* Weather App */}
+            <ProjectCard
+              title="Weather App"
+              desc="Clean UI for current weather and forecast."
+              stack={["ReactTS", "CSS", "OpenWeather API"]}
+              live="https://weather.khambazarov.dev/"
+              repo="https://github.com/Khambazarov/weather-ts/"
+              status="live"
+            />
+
+            {/* Task Manager App */}
+            <ProjectCard
+              title="Task Manager App"
+              desc="Simple to-do app with task management features."
+              stack={["ReactJS", "Material-UI", "SCSS"]}
+              live="https://todo.khambazarov.dev/"
+              repo="https://github.com/Khambazarov/todo/"
+              status="live"
             />
           </div>
         </Section>
