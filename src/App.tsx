@@ -159,7 +159,7 @@ export default function App() {
               desc="Website for a local window cleaning business."
               stack={["ReactTS", "Tailwind CSS", "Vite"]}
               live="https://fensterputzer-ag.de/"
-              repo=""
+              repo="https://github.com/Khambazarov/fensterputzer/"
               status="wip"
             />
 
