@@ -158,9 +158,9 @@ export default function App() {
               title="Fensterputzer A&G"
               desc="Website for a local window cleaning business."
               stack={["ReactTS", "Tailwind CSS", "Vite"]}
-              live="https://fensterputzer-ag.de/"
+              live="https://fensterputzer.netlify.app/"
               repo="https://github.com/Khambazarov/fensterputzer/"
-              status="wip"
+              status="live"
             />
 
             {/* Randomizer App */}
