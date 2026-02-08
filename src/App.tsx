@@ -157,7 +157,7 @@ export default function App() {
             <ProjectCard
               title="Fensterputzer A&G"
               desc="Website for a local window cleaning business."
-              stack={["ReactTS", "Tailwind CSS", "Vite"]}
+              stack={["Astro", "Tailwind CSS", "Vite"]}
               live="https://fensterputzer.netlify.app/"
               repo="https://github.com/Khambazarov/fensterputzer/"
               status="live"
