@@ -32,7 +32,7 @@ export default function App() {
   // Aktive Section ermitteln (wie in Nav)
   const sectionIds = useMemo(
     () => ["home", "about", "projects", "experience", "skills", "contact"],
-    []
+    [],
   );
   const activeId = useScrollSpy(sectionIds, {
     rootMargin: "-35% 0px -55% 0px",
@@ -45,7 +45,7 @@ export default function App() {
       (t("experience.items", {
         returnObjects: true,
       }) as unknown as ExpItem[]) ?? [],
-    [t]
+    [t],
   );
 
   const skillCats = useMemo(
@@ -53,7 +53,7 @@ export default function App() {
       (t("skills.categories", {
         returnObjects: true,
       }) as unknown as SkillCategory[]) ?? [],
-    [t]
+    [t],
   );
 
   // Dokumenttitel dynamisch setzen
@@ -143,13 +143,20 @@ export default function App() {
               status="live"
             />
 
-            {/* My previous Portfolio */}
+            {/* My current Portfolio */}
             <ProjectCard
-              title="My previous portfolio"
-              desc="This very website, built with React, TypeScript, and Tailwind CSS."
-              stack={["ReactTS", "Tailwind CSS", "Vite", "i18next"]}
+              title="My current portfolio"
+              desc="My personal portfolio featuring selected projects, skills, experience, multilingual content, and light and dark themes."
+              stack={[
+                "React",
+                "TypeScript",
+                "Vite",
+                "Tailwind CSS",
+                "i18next",
+                "Cloudflare Turnstile",
+              ]}
               live="https://khambazarov.dev/"
-              repo="https://github.com/Khambazarov/portfolio/"
+              repo="https://github.com/Khambazarov/homepage/"
               status="live"
             />
 
